@@ -2,7 +2,7 @@
 
 ## Client-Server Model
 
-- HTTP follows the client-server model. In HTTP context a <var>request</var> and a <var>response</var> are being called <var>message</var>
+- HTTP follows the [client-server model](../client_server_model.md). In HTTP context a <var>request</var> and a <var>response</var> are being called <var>message</var>
 - HTTP <var>request</var>s ate using <var>[methods](#_methods)</var> (some times called „verbs“)
 - HTTP can be used by <var>TCP</var> or <var>UDP</var>
 - HTTP communication is <var>stateless</var>
