@@ -1,0 +1,119 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252"><script type="text/javascript" src="Net_Log_struct-Dateien/bundle-playback.js" charset="utf-8"></script>
+<script type="text/javascript" src="Net_Log_struct-Dateien/wombat.js" charset="utf-8"></script>
+<script>window.RufflePlayer=window.RufflePlayer||{};window.RufflePlayer.config={"autoplay":"on","unmuteOverlay":"hidden"};</script>
+<script type="text/javascript" src="Net_Log_struct-Dateien/ruffle.js"></script>
+<script type="text/javascript">
+    __wm.init("https://web.archive.org/web");
+  __wm.wombat("http://www.netzmafia.de:80/skripten/netze/netz1.html","20081223200716","https://web.archive.org/","web","https://web-static.archive.org/_static/",
+	      "1230062836");
+</script>
+<link rel="stylesheet" type="text/css" href="Net_Log_struct-Dateien/banner-styles.css">
+<link rel="stylesheet" type="text/css" href="Net_Log_struct-Dateien/iconochive.css">
+<!-- End Wayback Rewrite JS Include -->
+
+<title>Grundlagen Computernetze</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000FF" alink="#FF0000" vlink="#FF00FF">
+<center><table border="0" width="90%">
+<tbody><tr><td align="LEFT"><img src="Net_Log_struct-Dateien/eyes.gif"></td>
+<td align="RIGHT"><h3>Grundlagen Computernetze</h3> 
+<br><b><i>Prof. Jürgen Plate</i></b></td></tr>
+</tbody></table></center>
+<hr>
+
+<h1 align="center">Logische Struktur von Netzen</h1>
+
+In diesem Abschnitt wird ganz knapp die logische Struktur von Netzen behandelt,
+also die Art und Weise, wie die einzelnen Stationen miteinander verbunden
+werden. Bei der Verkabelung von LANs muß man aber zwischen logischer
+Stuktur und Verkabelungsstruktur unterscheiden, z. B. kann ein Netz mit
+logischer Busstruktur bei der Verkabelung mit 'Twisted Pair'-Kabeln wie
+ein Sternnetz aussehen.<br>
+
+<h3>Sternstruktur</h3>
+Alle Teilnehmer werden an einen zentralen Knoten angeschlossen (früher
+z. B. häufig Anschluß von Sichtgeräten an einen Zentralrechner).
+Eine direkte Kommunikation der Teilnehmer untereinander ist nicht möglich,
+jegliche Kommunikation läuft über den zentralen Knoten (Punkt-zu-Punkt-Verbindung,
+Leitungsvermittlung). Die Steuerung der Kommunikation vom Knoten aus ist
+sehr einfach: Polling (regelmäßige Abfrage aller Stationen) oder
+Steuerung über Interrupt. Bei Ausfall der Zentrale sind sämtliche
+Kommunikationswege unterbrochen.<br>
+<p>
+</p><center><img src="Net_Log_struct-Dateien/b1-1.gif" alt="Schema der Sternstruktur"></center>
+<p>
+</p><h3>Ringstruktur</h3>
+Es gibt keine Zentrale, alle Stationen sind gleichberechtigt. Jeder Teilnehmer
+verfügt über einen  eigenen Netzanschluß (Knoten) und ist
+über diesen mit seinem linken und rechten Partner verbunden. Die Übertragung
+der Info erfolgt in einer Richtung von Knoten zu Knoten. Bei Ausfall eines
+Knotens sind sämtliche Kommunikationswege unterbrochen.
+<p>
+</p><center><img src="Net_Log_struct-Dateien/b1-2.gif" alt="Schema des Ringes"></center>
+<p>
+
+</p><h3>Busstruktur</h3>
+Es gibt keine Zentrale und keine Knoten. Die Verbindung aller Teilnehmer
+erfolgt über einen gemeinsamen Übertragungsweg. Zu einem Zeitpunkt
+kann immer nur eine Nachricht über den Bus transportiert werden. Bei
+Ausfall einer Station bleibt die Kommunikation der anderen Stationen erhalten.
+Bei den Bussystemen kann man noch unterscheiden in Basisband-Bussysteme
+und Breitband-Bussysteme. Bei Basisband-Bussystemen werden die elektrischen
+Pegel direkt übertragen; bei den für uns interessanten digitalen
+Informationen also 0- und 1-Pegel. Bei Breitband-Bussystemen werden über
+das Kabel mehrere unabhängige Kanäle geleitet (modulierte Übertragung).
+Busnetze müssen auf beiden Seiten mit der Leitungsimpedanz abgeschlossen
+werden, damit keine Echos auftreten, die zu Empfangsfehlern führen.
+<p>
+</p><center><img src="Net_Log_struct-Dateien/b1-3.gif" alt="Schema einer Busstruktur"></center>
+<p>
+
+</p><h3>vermaschte Struktur</h3>
+Jeder Teilnehmer ist mit mehreren anderen verbunden. Es gibt keine Zentrale
+und es existieren mehrere, unabhängige Übertragungswege zwischen
+zwei Stationen. Manchmal gibt es keine direkte Verbindung zwischen
+zwei Stationen. Dann führt der Weg über eine oder mehrere andere
+Stationen.<br>
+<p>
+</p><center><img src="Net_Log_struct-Dateien/b1-4.gif" alt="Vermaschte Struktur eines Netzes"></center>
+<p>
+Je nach Bedarf können die o. g. Topologien auch miteinander kombiniert
+werden, z. B. Bus mit angeschlossenen Sternen oder Bus mit angeschlossenen
+Bussen, was zu einer Baumstruktur führt. Insbesondere bei Weitverkehrsnetzen
+(WAN) treten vermaschte Strukturen auf. Teilweise ergeben sich dabei redundante
+Leitungswege, die auch bei Unterbrechung eines Wegs den Datentransport sicherstellen.
+</p><p>
+
+</p><center><table border="0" width="100%">
+<tbody><tr>
+<td align="LEFT" valign="BOTTOM"><img src="Net_Log_struct-Dateien/left.gif" border="0"> <a href="https://web.archive.org/web/20081223200716fw_/http://www.netzmafia.de/skripten/netze/netz0.html">Zum vorhergehenden Abschnitt</a></td>
+<td align="CENTER" valign="BOTTOM"><img src="Net_Log_struct-Dateien/up.gif" border="0"> <a href="https://web.archive.org/web/20081223200716fw_/http://www.netzmafia.de/skripten/netze/index.html">Zum Inhaltsverzeichnis</a></td>
+<td align="RIGHT" valign="BOTTOM"><img src="Net_Log_struct-Dateien/right.gif" border="0"> <a href="https://web.archive.org/web/20081223200716fw_/http://www.netzmafia.de/skripten/netze/netz2.html">Zum nächsten Abschnitt</a></td>
+</tr></tbody></table></center>
+<p></p><hr>
+<h6><i>Copyright © FH München, FB 04, Prof. Jürgen Plate</i></h6>
+
+
+
+</body></html>
+<!--
+     FILE ARCHIVED ON 20:07:16 Dec 23, 2008 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 05:41:07 May 28, 2025.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  captures_list: 0.464
+  exclusion.robots: 0.017
+  exclusion.robots.policy: 0.008
+  esindex: 0.01
+  cdx.remote: 1091.017
+  LoadShardBlock: 75.493 (3)
+  PetaboxLoader3.datanode: 122.77 (4)
+  load_resource: 138.782
+  PetaboxLoader3.resolve: 43.497
+-->

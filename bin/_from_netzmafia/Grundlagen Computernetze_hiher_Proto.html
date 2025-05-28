@@ -1,0 +1,1399 @@
+<html style="--wm-toolbar-height: 69px;"><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252"><script src="Grundlagen%20Computernetze_hiher_Proto-Dateien/athena.js" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app204.us.archive.org';v.server_ms=398;archive_analytics.send_pageview({});});</script>
+<script type="text/javascript" src="Grundlagen%20Computernetze_hiher_Proto-Dateien/bundle-playback.js" charset="utf-8"></script>
+<script type="text/javascript" src="Grundlagen%20Computernetze_hiher_Proto-Dateien/wombat.js" charset="utf-8"></script>
+<script>window.RufflePlayer=window.RufflePlayer||{};window.RufflePlayer.config={"autoplay":"on","unmuteOverlay":"hidden"};</script>
+<script type="text/javascript" src="Grundlagen%20Computernetze_hiher_Proto-Dateien/ruffle.js"></script>
+<script type="text/javascript">
+    __wm.init("https://web.archive.org/web");
+  __wm.wombat("http://netzmafia.de:80/skripten/netze/netz9.html#9.5","20070630160227","https://web.archive.org/","web","https://web-static.archive.org/_static/",
+	      "1183219347");
+</script>
+<link rel="stylesheet" type="text/css" href="Grundlagen%20Computernetze_hiher_Proto-Dateien/banner-styles.css">
+<link rel="stylesheet" type="text/css" href="Grundlagen%20Computernetze_hiher_Proto-Dateien/iconochive.css">
+<!-- End Wayback Rewrite JS Include -->
+
+<title>Grundlagen Computernetze</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000FF" alink="#FF0000" vlink="#FF00FF"><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" lang="en" style="display: block; direction: ltr; height: 69px;" toolbar-mode="auto">
+</div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20070630160227/http://netzmafia.de:80/skripten/netze/netz9.html#9.5</div>
+<script type="text/javascript">//<![CDATA[
+__wm.bt(750,27,25,2,"web","http://netzmafia.de/skripten/netze/netz9.html","20070630160227",1996,"https://web-static.archive.org/_static/",["https://web-static.archive.org/_static/css/banner-styles.css?v=1B2M2Y8A","https://web-static.archive.org/_static/css/iconochive.css?v=1B2M2Y8A"], false);
+  __wm.rw(1);
+//]]></script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+ 
+<center><table border="0" width="90%">
+<tbody><tr><td valign="TOP" align="LEFT"><img src="Grundlagen%20Computernetze_hiher_Proto-Dateien/eyes.gif"></td>
+<td valign="TOP" align="RIGHT"><h2>Grundlagen Computernetze</h2> 
+<br><b><i>Prof. Jürgen Plate</i></b></td></tr>
+</tbody></table></center>
+<hr>
+
+<h1 align="center">Höhere Protokolle</h1>
+
+In diesem Abschnitt werden beispielhaft einige höhere Protokolle für 
+Internet-Dienste skizziert. Bemerkenswert ist, daß viele dieser Protokolle
+aus wenigen Anweisungen in lesbarem Klartext bestehen. Der Grund hierfür ist
+unter anderem, daß man diese Protokolle zum Testen einer Verbindung
+durch eine Telnet-Verbindung auf einem bestimmten Port (z. B. 80 für HTTP)
+von Hand nachvollziehen kann. Durch den Klartext ist auch die Fehlersuche
+bei einer Verbindung ohne großen Aufwand und ohne spezielle Tools
+möglich. Die vorgestellten Protokolle werden hier nicht bis ins Detail
+ausgebreitet, es soll Ihnen nur eine Vorstellung über die Arbeitsweise
+der Internet-Protokolle vermittelt werden.
+<p>
+
+<a name="9.1"></a>
+</p><h2>DHCP und RADIUS</h2>
+<h3>DHCP</h3>
+Um in einem IP-basierten Netzwerk Kontakt mit anderen Rechnern aufnehmen zu
+können, benötigt jeder Computer eine eigene, eindeutige IP-Nummer.
+Je größer das Netzwerk wird und je mehr verschiedene Rechnerplattformen darin
+vereint sind, desto höher ist der Aufwand für den Administrator:
+Wann immer ein neuer Rechner in das Netzwerk integriert wird, muß er 
+zuerst konfiguriert werden. Ändert einer der zentralen Server seine
+Adresse oder wird er auf eine andere Maschine verlegt, müssen alle
+Netzwerk-Client umkonfiguriert werden. Einen zweiter Aspekt bringen sogenannte
+"nomadische" Systeme, z. B. Laptops, die irgendwo ins Netz eingebunden werden
+sollen. Dabei bieten sich verschiedene Zugangsmöglichkeiten für
+Rechner in das Intranet:
+<ul>
+<li>Anschluß über einen Ethernet-Hub oder -Switch
+</li><li>Zugang durch drahtlose Netze (und evtl. einen Router zum drahtlosen Subnetz)
+</li><li>Zugang vom Internet über eine Firewall
+</li><li>Modemzugang über einen Modemserver
+</li></ul>
+<p>
+Günstig wäre es, wenn der Zugang eines Rechners zum Netz folgenden Anforderungen 
+genügen würde:
+</p><ul>
+<li>automatisiert, d. h. ohne manuellen Eingriff
+</li><li>authentifiziert, d. h. nur zugelassene Systeme erhalten Zugriff
+</li><li>vollständig (Netz-, System- und Anwendungskonfiguration)
+</li><li>standardisiert, d. h. für alle Systeme in einheitlicher Form
+</li></ul>
+<p>
+Eine Lösung für dieses Problem bietet <b>DHCP</b> (Dynamic Host Configuration
+Protocol). Dieser Dienst ermöglicht es, einem Client dynamisch eine
+IP-Nummer und andere Netzwerkparameter, wie den Netzwerknamen, die 
+Gatewayadresse, etc., zuzuweisen, ohne daß der Administrator den Rechner 
+überhaupt zu Gesicht bekommt. DHCP ist dabei völlig unabhängig von der 
+eingesetzten Plattform. Das heißt, es kann sowohl Windows-Maschinen wie 
+auch zum Beispiel Unix-Rechner mit den Netzwerkeinstellungen versorgen. 
+Um ein Mindestmaß an Verfügbarkeitsanforderungen zu erfüllen, 
+sollte natürlich mehr als nur ein DHCP-Server vorhanden sein, da sonst 
+dessen Ausfall die Funktion sämtlicher Clienten beeinträchtigt. 
+</p><p>
+Das in RFC 2131 definierte Protokoll DHCP arbeitet nach dem Client-Server-Modell. 
+Als Server wird ein Programm bezeichnet, das den Pool der zu vergebenden Nummern 
+verwaltet und sich darum kümmert, daß eine Nummer nicht zweimal vergeben wird. 
+Der Client ist ein Programm auf dem lokalen Rechner, das zunächst den 
+Server selbsttätig im Netz suchen muß und ihn anschließend darum bittet, eine 
+IP-Nummer zuzuteilen.
+Die Grundfunktion des Servers ist recht einfach aufgebaut: über eine 
+Konfigurationsdatei teilt der Administrator ihm mit, welche Adreßbereiche
+er für die Weitergabe an Client zur Verfügung hat. Fragt ein Client nach 
+einer IP-Adresse, dann muß der Server zunächst nachsehen, ob noch eine Adresse frei
+ist. Diese freie IP-Nummer liefert er an den Client aus. Gleichzeitig
+muß er eine Datei (Leases-File) führen, in der er protokolliert, welche Adresse 
+bereits an wen vergeben ist. Bei der Adreßvergabe sind drei verschiedene 
+Modi einstellbar:
+</p><ul>
+<li> <b> Automatic Allocation</b>: Fordert ein Client eine IP-Nummer
+an, wird sie ihm auf unbegrenzte Zeit zugeteilt, solange noch Adressen 
+zur Verfügung stehen. Sind alle Adressen verbraucht, kann kein neuer Client
+mehr konfiguriert werden, auch wenn ein Teil der zuvor bedienten 
+Rechner im Moment gar nicht eingeschaltet ist. 
+</li><li> <b> Manual Allocation</b>: In dieser Betriebsart geht es nur darum,
+Verwaltungsaufwand zu minimieren. In der Konfigurationsdatei ist
+für jeden Client im Netzwerk eine IP-Nummer fest zugeordnet. Der
+Server ist lediglich für die Auslieferung der Adresse an den Client
+verantwortlich.
+</li><li> <b> Dynamic Allocation</b>: Jeder Client bekommt auf Anfrage eine
+IP-Nummer, solange im definierten Pool noch Einträge frei sind. Der Unterschied 
+gegenüber der <i>Automatic Allocation</i> besteht darin, daß die IP-Nummer
+nur für eine bestimmte, maximale Zeitspanne (<i>Lease-Time</i>) 
+gültig ist und vom Client innerhalb dieser Zeit zurückgegeben werden kann, 
+wenn sie nicht mehr benötigt wird.  Als einzige der drei Betriebsarten
+erlaubt <i>Dynamic Allocation</i>, kleine IP-Nummern-Pools mit einer
+großen Anzahl von Rechnern zu teilen. Einzige Voraussetzung:
+nicht alle Maschinen dürfen gleichzeitg laufen. Damit lassen sich auch
+Computer, die eher selten ins Netzwerk integriert werden, wie Laptops,
+zuverlässig mit einer IP-Nummer versorgen. Wird der Rechner vom Netz 
+getrennt, kann die Adresse für eine andere Station verwendet werden.
+In dieser Betriebsart werden die meisten DHCP-Server betrieben.
+</li></ul>
+<p>
+DHCP ist eine Erweiterung des BOOTP-Protokolls und konkurriert in seiner
+Basisfunktionalität mit RARP. Gegenüber BOOTP zeichnet es sich vor 
+allem durch die Flexibilität bezüglich der abfragbaren Konfigurationsparameter 
+und durch das Konzept der <i>Lease</i> aus, d. h. die Möglichkeit eine 
+Information dem Client gegenüber als nur begrenzt gültig zu markieren. 
+Damit wird die Flexibilität bei Veränderungen der Netztopologie und weiterer
+Konfigurationsparameter gewahrt. Ferner ist die Unterstützung von großen
+Netzen, in denen nichts stets alle Systeme zugleich aktiv sind, mit limitierten
+Pools von Adressen möglich. Durch die Rückwärtskompatibilität 
+zum PDU-Format von BOOTP ist die Verwendung existierender BOOTP-Relay-Agents in 
+Subnetzen ohne DHCP-Server gewahrt.
+</p><p>
+Beim Start des Systems schickt der Client ein DHCPDISCOVER-Paket in
+Form eines Broadcasts an 255.255.255.255 (Phase 1). Anhand der
+Identifikation des Client im Paket können sich einige (oder ein einzelner)
+DHCP-Server entscheiden, dem Client die gewünschte IP-Adresse sowie
+andere Konfigurationsinformation in Form eines DHCPOFFER-Pakets
+zuzuteilen. (Vor der Vergabe können und sollten die Server die
+Konfliktfreiheit bzgl. der Adresse mittels ICMP-Ping oder ARP prüfen.)
+Der Client kann sich in Phase 2 aus den Antworten eine für ihn geeignete
+aussuchen und bestätigt dies gegenüber dem Server durch ein
+DHCPREQUEST-Paket (Phase 3). Entscheidungsparameter können z.B. die
+Leasedauer (t<sub>l</sub>) oder die Menge der angebotenen Konfigurationsinformation.
+Bei korrekter Information im DHCPREQUEST bestätigt der Server die Lease
+durch ein DHCPACK-Paket, womit die Konfiguration abgeschlossen ist
+Bevor die IP-Adresse verwendet wird, sollte der Client ihre Einzigartigkeit
+durch ein <i>Gratuitious ARP</i> prüfen. Sollte der Client die angebotene 
+Adresse ablehnen wollen, teilt er dies durch DHCPDECLINE-Paket dem Server und
+beginnt nach einer kurzen Wartefrist erneut mit Phase 1. Sobald der Client die 
+Bestätigung durch DHCPACK erhalten hat, ist er für die Überwachung 
+der Lease-Dauer selbst verantwortlich. Insbesondere kennt das Protokoll auch keine
+Methode, einem Client die Lease zu entziehen.
+Vor Ablauf der Lease-Dauer (meist nach der Hälfte der Zeit = 0,5 * t<sub>l</sub>) 
+sollte der Client durch einen erneuten Durchgang durch Phase 3 versuchen, die
+Lease vom selben DHCP-Server verlängert zu bekommen. Gelingt ihm das
+nicht, kann er vor endgültigem Ablauf der Lease-Dauer (meist nach ca. 0,8 *
+t<sub>l</sub>) die Phase 1 nochmals durchlaufen, um eine Verlängerung bzw.
+Neuausstellung der Lease (eventuell von einem anderen Server) zu erhalten.
+Die vorzeitige Aufgabe einer Lease sollte der Client dem Server durch ein
+DHCPRELEASE mitteilen, um den Pool freier Adressen möglichst groß und
+den Vergabestand im Server möglichst akkurat zu halten.
+Alle Zustandsübergänge im Client sind in folgender Abbildung
+zusammengefaßt. Die Komplexität hat in der Vergangenheit zu einigen
+Fehlimplementierungen mancher Client-Software geführt, die jedoch aufgrund
+der großen "Toleranz" im Protokoll meist keine kritischen Auswirkungen
+hatten.
+</p><p>
+</p><center><img src="Grundlagen%20Computernetze_hiher_Proto-Dateien/dhcpablauf.gif"></center>
+<p>
+Der Vorgang "Lease erneuen" kann beliebig oft wiederholt werden, solange der 
+Client die Adresse noch braucht und der Server nichts dagegen hat. Unter 
+Umständen verweigert der DHCP-Server die Erneuerung. Falls die 
+gewünschte Adresse für den DHCP-Server inakzeptabel ist, schickt 
+er dem Client ein ablehnendes DHCPNAK. Der Client beginnt dann von Neuem.
+</p><p>
+Was passiert, wenn der Client den DHCP-Server nicht mehr erreichen kann, 
+der ihm seine IP-Adresse zugeteilt hat? Bevor sein Lease verfällt, 
+soll der Client den DHCPREQUEST nicht mehr direkt an den DHCP-Server 
+schicken, sondern es broadcasten. Somit hören alle DHCP-Server 
+wieder mit. Wenn Failover richtig funktioniert, wird der Backup-Server 
+jetzt das Lease erneuen. Kommt hingegen keine Antwort oder nur ein 
+DHCPNAK, muß der Client wieder von vorne beginnen, und ein 
+DHCPDISCOVER broadcasten usw. Das ist insofern schlecht, als er nun 
+höchstwahrscheinlich eine ganz andere IP-Adresse bekommt. Bestehende 
+Verbindungen, die noch die alte IP-Adresse verwenden, müssen abgebaut werden.
+</p><p>
+Es darf natürlich nicht jeder beliebige Rechner Zugang zum LAN erhalten. Deshalb 
+kann der DHCP-Server auch eingeschränkt werden - bis hin zu einer Liste von
+"erlaubten" MAC-Adressen. Man kann auch eine gemischte Versorgung der Rechner
+im Netz vorsehen, teils mit festen IP-Adresse (z. B. Server mit "Außenwirkung"),
+teils mit dynamisch zugewiesenen Adressen.
+</p><p>
+
+</p><h3>Remote-Zugang mit RADIUS</h3>
+Der Zugang zum Netz über Wählleitungen (analoges Telefon, ISDN, xDSL) erfolgt
+normalerweise über einen oder mehrere Remote Access Server (RAS), in
+Einzelfällen auch über einen Rechner mit angeschlossenem Modem, ISDN-Karte oder
+xDSL-Anschluß. Deren Aufgabe ist es, ankommende digitale oder analoge Anrufe
+entgegenzunehmen, eine Benutzerauthorisierung durchzuführen und, falls diese
+erfolgreich war, die Verbindung des anrufenden Rechners mit dem internen
+Datennetz freizugeben. Der ferne Rechner verhält sich dann so, als ob er direkt
+am Datennetz angeschlossen wäre. Als Übertragungsprotokoll wird in der Regel 
+<b>PPP</b> (Point to Point Protokoll, erlaubt IP- und IPX-Verbindungen), 
+<b>SLIP</b> (Serial Line Internet Protokoll, veraltet, nur für IP-Verbindungen) 
+und ggf. <b>ARAv2</b> (Apple Remote Access Version 2) angeboten.
+<p>
+Ein spezieller Terminalserver-Modus gestattet es, sich mit einem normalen 
+Terminalprogramm (z.B. Hyperterminal, Kermit, usw.) auf dem Access-Server anzumelden 
+und von dort aus Telnetverbindungen aufzubauen. IP-Adressen werden normalerweise aus
+einem IP-Adresspool vergeben. Oft werden auch "virtuelle Verbindungen" unterstützt. 
+Diese erlauben den physikalischen Abbau von Verbindungen, wenn gerade keine Daten
+übertragen werden, ohne daß die logische Verbindung verloren geht. Die
+Verbindung wird automatisch mit den gleichen Parametern wie vorher wieder
+aufgebaut, wenn Daten wieder übertragen werden müssen. 
+</p><p>
+<img src="Grundlagen%20Computernetze_hiher_Proto-Dateien/radius1.gif" align="left" vspace="5" hspace="5">
+Für die standardisierte Authentifizierung am Modem- und Internetzugang setzt sich 
+zunehmend das RADIUS-Protokoll (Remote Authentication and Dial-In User Service) durch. 
+Seine Client-Proxy-Server-Architektur erlaubt die flexible Positionierung an
+Netzzugangspunkten und wird von fast allen Herstellern von Modemservern
+unterstützt. In Kombination mit DHCP und PPP ist die Aufgabe der Konfiguration
+der anwählenden Endsysteme in automatisierter Weise gelöst. Der Radius-Server
+ist ein zentraler Authentifizierungs-Server, an den sich alle RA-Server wenden.
+Auf diese Weise lassen sich unabhängig von der Netz-Infrastruktur alle
+Remote-User zentral verwalten und Benutzerprofile mit Zugangsrestriktionen definieren, 
+aber auch zusätzliche Sicherheitsverfahren vorsehen. Beispielsweise kann festgelegt 
+werden, dass der Nutzer nur nach einem Rückruf durch den Einwahlknoten an eine zuvor 
+vereinbarte Rufnummer Zugriff auf das Unternehmensnetzwerk bekommen darf. Diese
+Informationen übergibt der Radius-Server an den RA-Server, der das weitere
+Login entsprechend koordiniert. Der Vorteil dieses Verfahrens liegt in den einmalig
+generierten Zugangsdaten der Nutzer, die auch in verteilten Netzwerken
+jederzeit aktuell verfügbar sind und mit einfachen administrativen Eingriffen
+an zentraler Stelle definiert und verändert werden können. Darüber hinaus ist
+die innerbetriebliche Abrechnung der Nutzung des Systems durch ein
+entsprechendes Accounting möglich.<br clear="ALL">
+</p><p>
+Das Radius-Protokoll setzt auf UDP auf. Die Struktur
+eines Radius-Pakets ist ausgesprochen einfach. Es besteht aus fünf
+grundlegenden Elementen: einem Radius-Code, einem Identifier, einer Angabe zur
+Paketlänge, einem Authenticator und gegebenenfalls aus einer Reihe von
+Attributen. Der Radius-Code beschreibt die Aufgabe des Datenpakets. 
+</p><p>
+</p><center><img src="Grundlagen%20Computernetze_hiher_Proto-Dateien/radius2.gif"><h5>Aufbau des Radius-Pakets</h5></center>
+<p>
+Die Codes 1, 2 und 3 verwalten den reinen Access vom Request bis zur Bestätigung 
+oder Abweisung. Die Codes 4 und 5 dienen dem Accounting. Der Identifier ist acht 
+Bit lang und dient der Zuordnung von Anfragen und Antworten. Das sicherheitstechnisch 
+wichtigste Feld eines Radius-Rahmens ist der Authenticator, der eine Länge von 16 
+Oktetts beziehungsweise vier 32-Bit-Worten hat. Dabei wird zwischen dem Request 
+Authenticator und dem Response Authenticator unterschieden. Inhalt des Request 
+Authenticators ist eine Zufallszahl, die das gesamte Feld ausfüllt. Die Länge dieser 
+Zufallszahl gewährleistet mit einer sehr hohen Wahrscheinlichkeit die Einmaligkeit 
+dieses Wertes. Damit bietet das System einen gewissen Schutz vor Hackerattacken. Mit
+dem Versand des Request Authenticators werden die Zugangsdaten des Nutzers, der
+sich im gesicherten Netzwerk anmelden möchte, als Attribute übergeben. Der
+Radius-Server wird diese Anfrage entweder mit einer Access-Accept-,
+Access-Reject- oder Access-Challenge-Nachricht beantworten, die ihrerseits mit
+einem 16 Oktett langen Response Authenticator versehen ist. Dieser ist ein
+MD5-Hash-Fingerprint setzt sich zusammen aus dem empfangenen Radius-Paket
+einschließlich der Attribute sowie den geheimen Zugangsdaten, die auf dem
+Server abgelegt sind, zusammensetzt. Die Attribute eines Radius-Pakets
+beinhalten alle wichtigen Informationen, die zwischen dem RAS und dem
+Radius-Server ausgetauscht werden müssen. 
+</p><p>
+</p><center><img src="Grundlagen%20Computernetze_hiher_Proto-Dateien/radius2.gif"><h5>Attribute sind sehr einfach aufgebaut</h5></center>
+<p>
+Attribute werden in einer Liste mit variabler Länge im Anschluss an den 
+Authenticator übertragen. In den Attributen können natürlich Nutzernamen
+und Passwörter, aber auch IP-Adresse, Service-Typen, Status-Meldungen, 
+Filter-IDs und - wichtig beim CHAP - ein entsprechender Challenge-Wert 
+übergeben werden. Attribute werden in Datensätzen variabler Länge übertragen, 
+die jeweils aus drei Feldern bestehen. Das erste aus acht Bit bestehende 
+Feld benennt die Art des Attributes. Da nicht nur die Liste aller Attribute, 
+sondern auch jeder einzelne Datensatz selbst in der Länge variabel ist, gibt 
+das zweite Oktett die Länge des Attributes an. Erst ab dem dritten Oktett werden 
+die eigentlichen Informationen übertragen.
+</p><p>
+Im einfachsten Fall wird ein Radius-Request mit einer Legitimierung des Nutzers 
+oder dessen Abweisung beantwortet. Dazu folgt auf dem Access-Request eine 
+Access-Accept- oder eine Access-Reject-Nachricht vom Radius-Server. Die Art 
+der Antwort wird mit dem Radius-Code angezeigt. Das Verfahren harmonisiert 
+mit PAP und CHAP. 
+</p><p>
+
+<a name="9.2"></a>
+</p><h2>SMTP - Simple Mail Transfer Protocol</h2>
+Der urspüngliche Standard für SMTP - niedergelegt im RFC 821 -
+stammt aus dem Jahr 1982 und gilt, abgesehen von einigen
+Erweiterungen, nach wie vor. Dieser RFC 821 legte ein Minimum an
+Schlüsselworten fest, die jede Implementation von SMTP (d. h. die
+Verkörperung von SMTP in einem Programm) beherrschen muß. Dies
+sind:
+<p>
+<table align="CENTER" width="80%" border="1" cellpading="3">
+<tbody><tr><td valign="TOP">Kommando</td><td valign="TOP">Argument</td><td valign="TOP">Beschreibung</td></tr>
+<tr>
+<td valign="TOP">HELO</td><td valign="TOP">Systemname</td>
+<td valign="TOP">Beginn, Name des sendenden Systems</td>
+</tr>
+<tr><td valign="TOP">MAIL</td><td valign="TOP">From: Absenderadresse</td>
+<td valign="TOP">Beginn der Übermittlung</td></tr>
+<tr><td valign="TOP">RCPT</td><td valign="TOP">To: Empfängeradresse</td>
+<td valign="TOP">Adressat der E-Mail</td></tr>
+<tr><td valign="TOP">DATA</td><td valign="TOP">&nbsp;</td>
+<td valign="TOP">Brieftext, Ende durch eine Zeile mit "."</td></tr>
+<tr><td valign="TOP">HELP</td><td valign="TOP">Topic</td>
+<td valign="TOP">Hilfestellung</td></tr>
+<tr><td valign="TOP">VRFY</td><td valign="TOP">Mailadresse</td>
+<td valign="TOP">Mailadresse verifizieren</td></tr>
+<tr><td valign="TOP">EXPN</td><td valign="TOP">Mailadresse</td>
+<td valign="TOP">Mailadresse expandieren (z. B. Liste)</td></tr>
+<tr><td valign="TOP">RSET</td><td valign="TOP">&nbsp;</td>
+<td valign="TOP">Senden abbrechen, Zurücksetzen</td></tr>
+<tr><td valign="TOP">NOOP</td><td valign="TOP">&nbsp;</td>
+<td valign="TOP">nichts tun</td></tr>
+<tr><td valign="TOP">QUIT</td><td valign="TOP">&nbsp;</td>
+<td valign="TOP">Verbindung beenden</td></tr>
+</tbody></table>
+</p><p>
+Die Verbindung eines MTA zu einem anderen läßt sich nachstellen:
+</p><p>
+</p><pre>	telnet lx-lbs.e-technik.fh-muenchen.de smtp
+	Trying 129.187.106.196...
+	Connected to lx-lbs.e-technik.fh-muenchen.de.
+	Escape character is '^]'.
+	220 lx-lbs.e-technik.fh-muenchen.de Smail3.1.28.1 #1 ready at Sun, 25 Feb 96 23:15 MET
+	helo www.netzmafia.de
+	250 lx-lbs.e-technik.fh-muenchen.de Hello www.netzmafia.de
+	mail from: paulsen@fitug.de
+	250 <paulsen@fitug.de> ... Sender Okay
+	rcpt to: holm@lx-lbs.e-technik.fh-muenchen.de
+	250 <holm@lx-lbs.e-technik.fh-muenchen.de> ... Recipient Okay
+	data
+	354 Enter mail, end with "." on a line by itself
+	Hallo Holm,
+	
+	zu Deiner Frage bezeglich der Reinigung von Morgensternen
+	wollte ich Dir nur den Tip geben, dazu reine Kernseife zu
+	verwenden.
+	Damit ist die Drecksarbeit im Handumdrehen erledigt.
+	
+	Beste Gruesse, Paulsen
+	.
+	250 Mail accepted
+	quit
+	221 lx-lbs.e-technik.fh-muenchen.de closing connection
+	Connection closed by foreign host.
+</holm@lx-lbs.e-technik.fh-muenchen.de></paulsen@fitug.de></pre>
+<p>
+Beim Verbindungsaufbau meldet sich der lokale MTA mit einer
+"Begrüßungszeile". 
+Der lokale empfangende MTA wird mit "HELO"
+angesprochen und als sendender MTA der des Systems
+www.netzmafia.de angegeben.  Der lokale MTA antwortet mit
+einem Zahlencode, der dem Sender-MTA signalisiert, daß seine
+geforderte Aktion in Ordnung geht. Die Klarschrift nach dem
+Zahlencode dient nur der besseren Lesbarkeit für den Menschen
+(z. B. für den, der Fehler suchen muß). 
+Auf "MAIL FROM:" folgt die Adresse des Absenders, und 
+auf "RCPT TO:" die des Empfängers. Auf
+das Schlüsselwort "DATA" folgt schließlich der 
+ganze Brief, also sowohl die Kopfzeilen, als auch der Text. Der 
+Empfänger-MTA wird
+solange Text erwarten, bis ihm der Sender-MTA über eine Zeile,
+die nur einen Punkt enthält, signalisiert, daß der Brief zu Ende
+ist. Nach der letzten Bestätigung des Empfänger-MTAs könnte der
+Sender den nächsten Brief übermitteln, wiederum beginnend mit
+"MAIL FROM:". Nach dem Empfang des Briefes kopiert der lokale MTA
+den Brief in die Postfach-Datei des Empfängers.
+</p><p>
+Der RFC 821 legte noch einige weitere Schlüsselworte fest, z. B.
+"EXPN" für expand, welches eine Unterstützung von Mailing-Listen
+erlaubt, oder "VRFY" für verify, mittels dessen eine Bestätigung
+der Empfänger-Adresse gefordert werden kann. Eine ganze Reihe von
+RFCs haben den Standard für SMTP erweitert. Die erweiterte
+Version heißt nun offiziell ESMTP (für Extended SMTP).
+Hinzugekommen sind beispielsweise Schlüsselworte für die
+Unterstützung von 8bit-Briefen (z. B. solche mit Umlauten), und
+die Möglichkeit eine maximale Größe für Briefe, die empfangen
+werden, festzulegen.
+</p><p>
+Auf Arbeitsplatzrechnern, die normalerweise nicht ständig eingeschaltet 
+sind, erfordert E-Mail spezielle Betriebsweisen. Falls der Rechner in ein 
+lokales Netz integriert ist, bietet sich eine Lösung über den
+Netzwerkserver oder einen speziellen Mail-Server an. Es gibt auch die
+Möglichkeit, direkt vom PC-Kompatiblen oder Macintosh auf eine
+Unix-Mailbox zuzugreifen. Voraussetzung dafür ist, daß der
+Arbeitsplatzrechner direkt mit TCP/IP am Ethernet angeschlossen ist
+oder über eine Modem-Verbindung per PPP-Protokoll angebunden
+ist. Die Mailer sind lokale Programme am PC oder Mac. Der Vorteil
+ist, daß man in der PC-Umgebung bleibt, und Dateien direkt aus
+dem PC-Directory-System versandt werden können. Die Mailbox des
+Benutzers liegt dabei selbst auf einem Mail-Server (Postfach). Der
+Zugriff vom PC auf das Mailsystem des Servers wird über
+den Client/Server-Mechanismus realisiert. Protokolle, die dieses
+erlaubt, sind POP ('Post Office Protocol') und IMAP ('Internet Message 
+Access Protocol').
+</p><p>
+
+<a name="9.3"></a>
+</p><h2>POP</h2>
+POP, genauer POP 3, ist die bisher noch gebräuchlichste Methode, um E-Mails 
+von einem Provider zu empfangen, wenn der eigene Rechner nicht ständig mit dem
+Internet verbunden ist. Das Prinzip und der Funktionsumfang von POP sind einfach:
+<ul>
+<li> Die für den Empfänger bestimmten E-Mails landen beim
+Provider im Spool-Verzeichnis und müssen dort vom
+Empfänger abgeholt werden.
+</li><li> Der Provider stellt einen POP-Server zur Verfügung, welcher die
+Schnittstelle des POP-Clients auf dem Empfänger-Rechner
+darstellt. Der lokale POP-Client kommuniziert mit dem POP-Server
+beim Provider. Über ihn werden die vorhandenen E-Mails
+angeboten.
+</li></ul>
+<p> 
+Eine Kommunikation zwischen dem POP-Client und dem POP-Server beim
+Provider kann schematisch beispielsweise so aussehen :
+</p><p> 
+<i>Client:</i>  Hast Du neue E-Mails für mich?<br>
+<i>Server:</i>  Ja, insgesamt fünf Stück!<br>
+<i>Client:</i>  Liste mir die Absender auf!<br>
+<i>Server:</i>  Meier, Mueller, Huber, Schulze<br>
+<i>Client:</i>  Zeige die E-Mails an!<br>
+<i>Server:</i>  ((Zeigt E-Mails an))<br>
+<i>Client:</i>  ((Speichert E-Mails ab))<br>
+<i>Client:</i>  Lösche alle angezeigten E-Mails<br>
+<i>Server:</i>  ((Löscht alle angezeigten E-Mails))<br>
+</p><p> 
+Wenn ein Client über POP3 Nachrichten abrufen möchte, baut er eine
+TCP-Verbindung über Port 110 auf. Ist die Verbindung zustande gekommen, sendet 
+der Server eine Begrüßungsmeldung. Die weitere Kommunikation zwischen 
+beiden Rechnern erfolgt über Kommandos, die aus drei oder vier Zeichen langen 
+Wörtern (mit einem oder mehreren Argumenten mit bis zu je 40 Zeichen) bestehen.
+Antworten enthalten einen Status-Indikator und ein Statuswort sowie optionale 
+Informationen. Es gibt zwei Status-Indikatoren:
+</p><ul>
+<li>Positiv: +OK 
+</li><li>Negativ: -ERR
+</li></ul>
+Eine POP3-Verbindung durchläuft mehrere Stufen. Nach der 
+Server-Begrüßung beginnt der "Authorization State". Der Client muß sich 
+gegenüber dem Server identifizieren. Nach erfolgreicher Authorisierung beginnt 
+der "Transaction State". Es werden alle Operationen zum Bearbeiten von Mails 
+ausgeführt. Sendet der Client das Kommando QUIT, beginnt der "Update State". 
+Der Server beendet die TCP-Verbindung und führt die vom Client im 
+"Transaction State" angeforderten Änderungen durch.
+<p>
+Viele POP3-Server haben zusätzlich einen Inaktivitäts-Timer. Laut 
+Spezifikation muß dieser auf mindestens zehn Minuten eingestellt sein. 
+Jedes Kommando des Clients setzt den Timer zurück. Ist der Timer abgelaufen, 
+wird die TCP-Verbindung beendet, ohne in den "Update State" zu wechseln - eventuelle
+Änderungen werden auf dem Server nicht gespeichert.
+
+</p><p>Nachdem der POP3-Client eine Verbindung zum Server aufgebaut hat, sendet dieser 
+eine einzeilige Begrüßungsmeldung beliebigenInhalts, z. B.:
+</p><pre><i>Server:</i> +OK POPEL-3 server ready
+</pre>
+Dabei handelt es sich bereits um eine Antwort des Servers, daher beginnt die 
+Meldung immer mit einer positiven Bestätigung (+OK). Die Verbindung befindet 
+sich nun im Zustand "Authorization". Der Client muß sich jetzt gegenüber 
+dem Server identifizieren. Dies erfolgt über die beiden Kommandos USER und PASS.
+<p>
+<table align="CENTER" width="80%" border="1" cellpading="3">
+<tbody><tr><th colspan="3">Kommandos im "Authorization State"</th></tr>
+<tr>
+<td valign="TOP">Kommando</td><td valign="TOP">Argument</td><td valign="TOP">Beschreibung</td></tr>
+<tr>
+<td valign="TOP">USER</td><td valign="TOP">Name</td>
+<td valign="TOP">Das Argument identifiziert eine Mailbox.</td>
+</tr>
+<tr>
+<td valign="TOP">PASS</td><td valign="TOP">String</td>
+<td valign="TOP">Der String enthält ein Mailbox-spezifisches Passwort.</td>
+</tr>
+<tr>
+<td valign="TOP">QUIT</td><td valign="TOP">-</td>
+<td valign="TOP">Beendet die Verbindung.</td>
+</tr>
+</tbody></table>
+</p><p>
+Die Kombination aus den Kommandos USER und PASS ist am gebräuchlichsten.
+Dabei werden die jeweiligen Parameter im Klartext an den Server gesendet. 
+Ein Beispiel: Der Username für das Postfach soll "plate", das Passwort 
+"XYZ1230" heißen. In diesem Fall wird folgender Authentifizierungsdialog ablaufen: 
+</p><pre><i>Client:</i> USER plate
+<i>Server:</i> +OK name is a valid mailbox 
+<i>Client:</i> PASS YXZ1230
+<i>Server:</i> +OK plates's maildrop has 9 messages (1600 octets)
+</pre>
+Bei falschen Angaben verweigert der Server den Zugang und gibt eine
+Fehlermeldung aus. Mögliche Dialoge bei falschem Usernamen:
+<pre><i>Client:</i> USER plat<b>o</b>
+<i>Server:</i> -ERR sorry, no mailbox for plato here
+</pre>
+Oder bei einem falschen Passwort:
+<pre><i>Client:</i> USER plate
+<i>Server:</i> +OK name is a valid mailbox 
+<i>Client:</i> PASS tralala
+<i>Server:</i> -ERR invalid password
+</pre>
+Die Tatsache, daß alle Dialoge im Klartext über das Netz abgewickelt
+werden, birgt ein hohes Sicherheitsrisiko. Mit dem Kommando APOP sieht die 
+aktuelle POP3-Definition eine wesentlich sicherere Option zur Authentifizierung 
+vor. Diese beschreibt in einem Kommando den User und identifiziert ihn mit einer
+Einweg-Hash-Funktion. 
+<p>
+Hat sich der Client beim Server identifiziert, wechselt die Verbindung in den 
+"Transaction State". Dem Client stehen nun eine Reihe von Kommandos zur 
+Behandlung der Mails zur Verfügung:
+</p><p>
+<table align="CENTER" width="80%" border="1" cellpading="3">
+<tbody><tr><th colspan="3">Kommandos im "Transaction State"</th></tr>
+<tr><td valign="TOP">Kommando</td><td valign="TOP">Argument</td><td valign="TOP">Beschreibung</td></tr>
+<tr>
+<td valign="TOP">STAT</td><td valign="TOP">-</td>
+<td valign="TOP">Liefert die Anzahl der gespeicherten Mails und die Größe der 
+Mailbox zurück (in Byte).</td>
+</tr>
+<tr>
+<td valign="TOP">LIST</td><td valign="TOP">Nummer</td>
+<td valign="TOP">Liefert die Nummer und Größe (in Bytes) aller Mails zurück. 
+Wird als Argument eine Mail-Nummer angegeben, wird nur die Größe 
+dieser Mail ausgegeben.</td>
+</tr>
+<tr>
+<td valign="TOP">RETR</td><td valign="TOP">Nummer</td>
+<td valign="TOP">Gibt die Mail mit der als Argument übergebenen Nummer aus.</td>
+</tr>
+<tr>
+<td valign="TOP">DELE</td><td valign="TOP">Nummer</td>
+<td valign="TOP">Löscht die Mail mit der übergebenen Nummer.</td>
+</tr>
+<tr>
+<td valign="TOP">NOOP</td><td valign="TOP">-</td>
+<td valign="TOP">Bewirkt die Antwort "+OK". Dient zur Aufrechterhaltung der 
+Verbindung, ohne daß ein Time-Out auftritt.</td>
+</tr>
+<tr>
+<td valign="TOP">RSET</td><td valign="TOP">-</td>
+<td valign="TOP">Setzt die aktive Verbindung zurück. Noch nicht ausgeführte 
+Änderungen werden verworfen.</td>
+</tr>
+<tr>
+<td valign="TOP">QUIT</td><td valign="TOP">-</td>
+<td valign="TOP">Beendet die Verbindung und führt alle gespeicherten Änderungen aus.</td>
+</tr>
+</tbody></table>
+</p><p>
+Der Server führt das Kommando DELE nicht unmittelbar aus. Die entsprechenden 
+E-Mails werden als gelöscht markiert und erst bei Beenden der Verbindung 
+endgültig vom Server gelöscht. Hat man eine Nachricht zum Löschen 
+gekennzeichnet, möchte dies jedoch rückgängig machen, führt 
+man das Kommando RSET aus. Der Server verwirft alle noch nicht ausgeführten 
+Operationen.<br>
+Sendet der Client das QUIT-Kommando, wechselt die Verbindung in den "Update State". 
+Der Server trennt die TCP-Verbindung und führt alle gespeicherten 
+Änderungen aus.
+</p><p>
+Neben den hier vorgestellten, für eine minimale Implementation ausreichenden 
+Kommandos gibt es noch weitere, die von den meisten Clients und Servern unterstützt 
+werden. Details hierzu finden Sie in RFC1725.
+</p><p>
+Im folgenden Beispiel sehen Sie den Ablauf einer POP3-Verbindung. Der Client 
+identifiziert sich gegenüber dem Server und ruft eine Liste der gespeicherten 
+E-Mails ab. Danach werden die Nachrichten einzeln heruntergeladen, auf dem Server 
+zum Löschen gekennzeichnet, und die Verbindung wird beendet.
+</p><pre><i>Server:</i> +OK POP3 server ready
+<i>Client:</i> user plate
+<i>Server:</i> +OK
+<i>Client:</i> pass xyz1230
+<i>Server:</i> +OK
+<i>Client:</i> LIST
+<i>Server:</i> +OK 3 messages (520 octets)
+<i>Server:</i> 1 120
+<i>Server:</i> 2 190
+<i>Server:</i> 3 210
+<i>Server:</i> .
+<i>Client:</i> RETR 1
+<i>Server:</i> +OK 120 octets
+<i>Server:</i> &lt;<i>... sendet Nachricht 1</i>&gt;
+<i>Server:</i> .
+<i>Client:</i> DELE 1
+<i>Server:</i> +OK message 1 deleted
+<i>Client:</i> RETR 2
+<i>Server:</i> +OK 190 octets
+<i>Server:</i> &lt;<i>... sendet Nachricht 2</i>&gt;
+<i>Server:</i> .
+<i>Client:</i> DELE 2
+<i>Server:</i> +OK message 2 deleted
+<i>Client:</i> RETR 4
+<i>Server:</i> -ERR no such message
+<i>Client:</i> QUIT
+<i>Server:</i> +OK
+</pre>
+<p>
+
+<a name="9.4"></a>
+</p><h2>IMAP: Internet Message Access Protocol</h2>
+IMAP (genauer: IMAP, Version 4) löst das POP-Verfahren zunehmend ab 
+und wird zum neuen Standard. Der Unterschied liegt unter anderem in der 
+Funktionalität des IMAP-Verfahrens.
+Das Prinzip ist dem POP-Verfahren jedoch sehr ähnlich. Die E-Mails
+werden wie beim POP-Verfahren beim Provider zwischengespeichert und
+können mit einem IMAP-Client auf den eigenen Rechner kopiert werden.
+IMAP bietet jedoch zusätzliche Funktionalitäten, die von POP noch
+nicht angeboten werden, z. B. kann der Mail-Body getrennt geladen werden, 
+und auch die Attachments lassen sich getrennt abrufen.<br>
+E-Mail-Client und Server tauschen bei IMAP ihre Daten über den TCP-Port 143 aus. 
+Im Gegensatz zu den Protokollen SMTP und POP muß der Client bei IMAP nicht nach 
+jedem gesendeten Kommando auf die unmittelbare Antwort des Servers warten. Es 
+können mehrere Befehle hintereinander versendet werden, die jeweilige Rückmeldung 
+vom Server kann später erfolgen. Dazu wird jedem Kommando seitens des Client eine 
+Kennung vorangestellt, auch "Tag" genannt, zum Beispiel "X001" für den ersten 
+Befehl und "X002" für den zweiten. Der Server kann dem Client auf mehrere Arten 
+antworten: Mit einem Plus-Zeichen am Anfang der Zeile antwortet der Server, 
+wenn er weitere Informationen zu dem vorangegangenen Kommando erwartet. Er 
+signalisiert dem Client gleichzeitig seine Empfangsbereitschaft. Steht dagegen 
+ein Sternchen am Anfang der Zeile, sendet der Server weitere Informationen 
+an den Client zurück.
+<p>
+Die Antwort eines Servers kennzeichnet den Erfolg oder Fehler eines Kommandos: 
+</p><ul>
+<li>OK (Kommando erfolgreich ausgeführt), 
+</li><li>NO (Fehler beim Ausführen) oder 
+</li><li>BAD (Protokoll-Fehler: Kommando unbekannt oder Syntax-Fehler). 
+</li></ul>
+Die Antwort enthält denselben Tag wie das zugehörige Kommando, damit der Client
+erkennt, welcher Response welchem Befehl gilt. Wie bei POP durchläuft eine 
+IMAP-Verbindung mehrere Sitzungsstufen:
+<ul>
+<li>Non-Authenticated State: Unmittelbar nach dem Aufbau der Verbindung. 
+Der User muß sich gegenüber dem Server identifizieren.
+</li><li>Authenticated State: Der User hat sich erfolgreich identifiziert und 
+muß nun eine Mailbox auswählen.
+</li><li>Selected State: Eine Mailbox wurde ausgewählt. Mailbox und Mails lassen 
+sich bearbeiten.
+</li><li>Logout State: Die Verbindung wird beendet; der Server führt noch 
+anstehende Tätigkeiten aus.
+</li></ul>
+<p>
+Der "Non-Authenticated State" stellt mehrere Möglichkeiten zur Identifizierung 
+des Anwenders zur Verfügung. Es gibt in diesem Zusatand folgende Kommandos:
+</p><p>
+<table align="CENTER" width="80%" border="1" cellpadding="3">
+<tbody><tr><th colspan="3">Kommandos im "Non-Authenticated State"</th></tr>
+<tr>
+<td valign="TOP">Kommando</td><td valign="TOP">Argument</td><td valign="TOP">Beschreibung</td></tr>
+<tr>
+<td valign="TOP">AUTHENTICATE</td><td valign="TOP">Authentifizierungs-Mechanismus</td>
+<td valign="TOP">Das Kommando bestimmt den Authentifizierungs-Mechanismus, zum Beispiel 
+"Kerberos" oder "S/Key". Details zu den Authentifizierungs-Mechanismen finden 
+Sie in RFC1731.</td>
+</tr>
+<tr>
+<td valign="TOP">LOGIN</td><td valign="TOP">Name/Passwort</td>
+<td valign="TOP">Identifiziert den Anwender über Benutzername und Passwort.</td>
+</tr>
+</tbody></table>
+</p><p>
+Beispiel für eine Authentifizierung mit dem LOGIN-Kommando:
+</p><pre><i>Client:</i> X001 LOGIN PLATE XYZ1230
+<i>Server:</i> X001 OK LOGIN completed
+</pre>
+<p>
+Im "Authenticated State" hat sich der User authentifiziert und muß nun eine 
+Mailbox auswählen, welche in dieser Sitzung bearbeitet werden soll. Dazu 
+stehen unter anderem folgende Kommandos zur Verfügung:
+</p><p>
+<table align="CENTER" width="80%" border="1" cellpadding="3">
+<tbody><tr><th colspan="4">Wichtige Kommandos im "Authenticated State"</th></tr>
+<tr>
+<td valign="TOP">Kommando</td><td valign="TOP">Argument</td><td valign="TOP">Beschreibung</td></tr>
+<tr>
+<td valign="TOP">SELECT</td><td valign="TOP">Mailbox-Name</td>
+<td valign="TOP">Wählt eine Mailbox zur weiteren Bearbeitung aus. Als erfolgreiche Antwort 
+sendet der Client Informationen zur gewählten Mailbox, wie beispielweise die 
+Anzahl der gespeicherten Nachrichten.</td>
+</tr>
+<tr>
+<td valign="TOP">EXAMINE</td><td valign="TOP">Mailbox-Name</td>
+<td valign="TOP">Identisch mit dem Kommando SELECT. Jedoch wird die Mailbox als 
+"read-only" ausgewählt, es sind keine dauerhaften Änderungen möglich.</td>
+</tr>
+<tr>
+<td valign="TOP">CREATE</td><td valign="TOP">Mailbox-Name</td>
+<td valign="TOP">Erstellt eine Mailbox mit dem als Argument übergebenen Namen.</td>
+</tr>
+<tr>
+<td valign="TOP">DELETE</td><td valign="TOP">Mailbox-Name</td>
+<td valign="TOP">Löscht die als Argument übergebene Mailbox.</td>
+</tr>
+<tr>
+<td valign="TOP">RENAME</td><td valign="TOP">Bestehender Mailbox-Name / Neuer Mailbox-Name</td>
+<td valign="TOP">Ändert den Namen einer Mailbox.</td>
+</tr>
+</tbody></table>
+</p><p>
+
+Beispiel: Löschen einer Mailbox:
+</p><pre><i>Client:</i> X324 DELETE TRALALA
+<i>Server:</i> X234 OK DELETE completed
+</pre>
+<p>
+Im "Selected State" gibt es viele Kommandos zum Bearbeiten einer Mailbox:
+</p><p>
+<table align="CENTER" width="80%" border="1" cellpadding="3">
+<tbody><tr><th colspan="4">Wichtige Kommandos im "Selected State"</th></tr>
+<tr><td>Kommando</td><td valign="TOP">Argument</td><td valign="TOP">Beschreibung</td></tr>
+<tr>
+<td valign="TOP">CLOSE</td><td valign="TOP">-</td>
+<td valign="TOP">Entfernt alle zum Löschen gekennzeichneten Mails und setzt die Verbindung 
+in den Authenticated State zurück.</td>
+</tr>
+<tr>
+<td valign="TOP">EXPUNGE</td><td valign="TOP">-</td>
+<td valign="TOP">Entfernt alle zum Löschen gekennzeichneten Mails, die Verbindung bleibt 
+im Selected State.</td>
+</tr>
+<tr>
+<td valign="TOP">SEARCH</td><td valign="TOP">ein oder mehrere Suchkriterien</td>
+<td valign="TOP">Erlaubt die Suche nach bestimmten Nachrichten in der aktuellen Mailbox. Das 
+Kommando unterstützt logische Verknüpfungen.</td>
+</tr>
+<tr>
+<td valign="TOP">FETCH</td><td valign="TOP">Gewünschte Daten einer Nachricht</td>
+<td valign="TOP">Bewirkt das Senden von Daten einer Nachricht vom Server zum Client.</td>
+</tr>
+</tbody></table>
+</p><p>
+
+Beispiel: Suchen einer Nachricht. Ergebnis sind die Nummern der entsprechenden Mails:
+</p><pre><i>Client:</i> X246 SEARCH SINCE 1-NOV-2001 FROM "ADAM"
+<i>Server:</i> * SEARCH 2 84 882
+<i>Server:</i> X246 OK SEARCH completed
+</pre>
+<p>
+
+Beendet der Client mit dem Kommando LOGOUT die Verbindung, wechselt der Server in 
+den "Update State" und führt noch anstehende Arbeiten aus.<br>
+Es gibt eine Reihe weiterer Befehle im "Authenticated State" und "Selected State",
+die in RFC2060 nachzulesen sind.
+</p><p>
+Im abschließenden Beispiel sehen Sie den Ablauf einer IMAP4-Verbindung. 
+Der Client identifiziert sich gegenüber dem Server, wählt eine Mailbox aus und 
+lädt den Header einer Nachricht herunter.
+</p><pre><i>Server:</i> * OK IMAP4 Service Ready
+<i>Client:</i> X001 login plate XYZ1230
+<i>Server:</i> X001 OK LOGIN completed
+<i>Client:</i> X002 select inbox
+<i>Server:</i> * 12 EXISTS
+<i>Server:</i> * FLAGS (\Answered \Flagged \Deleted \Seen \Draft)
+<i>Server:</i> * 2 RECENT
+<i>Server:</i> * OK [UNSEEN 11] Message 11 is first new message
+<i>Server:</i> * OK [UIDVALIDITY 2905753845] is first new message
+<i>Server:</i> X002 OK [READ-WRITE] SELECT completed
+<i>Client:</i> X003 fetch 9 rfc822.header
+<i>Server:</i> * 9 FETCH (RFC822.HEADER {346}
+<i>Server:</i> Date: mon, 11 Mar 2002 09:23:25 -0100 (MET)
+<i>Server:</i> From: plate &lt;plate@netzmafia.de&gt;
+<i>Server:</i> Subject: Schulung Netzwerke am Donnerstag
+<i>Server:</i> To:  &lt;schulung@ee.fhm.edu&gt;
+<i>Server:</i> Message-Id: &lt;20020311104452.GH1474.plate@netzmafia.de&gt;
+<i>Server:</i> Mime-Version: 1.0
+<i>Server:</i> Content-Type: TEXT/PLAIN; CHARSET=iso-8859-1
+<i>Server:</i> )
+<i>Server:</i> X003 OK FETCH completed
+<i>Client:</i> X004 LOGOUT
+<i>Server:</i> * BYE IMAP4 server terminating connection
+<i>Server:</i> X004 OK LOGOUT completed
+</pre>
+<p>
+Nachdem der Mail-Client über TCP eine Verbindung zum SMTP-Server aufgebaut hat, 
+wartet er auf einen Begrüßungstext des Servers. Im nächsten Schritt identifiziert 
+sich der Client mit dem Kommando LOGIN, als Argument übergibt er den Benutzernamen 
+und das Passwort. Nach dem Auswählen der Mailbox sendet der Server einige Informationen, 
+z. B. die Anzahl der ungelesenen Nachrichten. Mit dem Kommando FETCH fordert der 
+Client den Header der Nachricht 9 an. LOGOUT beendet die Verbindung.
+</p><p> 
+Bei Inbetriebnahme eines POP- bzw. IMAP-Clients (Outlook, Pegasus Mail, Netscape)
+muß dieser zunächst konfiguriert werden. Wichtige Angaben sind:
+</p><ul>
+<li> Domainname des POP- bzw. IMAP-Servers, d.h. Systems, auf 
+dem die eigentliche Mailbox liegt.
+</li><li>Benutzernummer auf diesem System
+</li><li>Paßwort für diese Benutzernummer
+</li><li>für den Versand: Angabe des SMTP-Mail-Relayhosts
+</li></ul>
+<p>
+POP/IMAP dient nur zum Abholen der Post vom Mail-Server. Der Versand 
+von E-Mail vom PC oder Mac aus geschieht ganz normal mit SMTP 
+(Simple Mail Transfer Protocol).
+</p><p>
+
+<a name="9.5"></a>
+</p><h2>FTP</h2>
+Ein weiterer zentraler Dienst in einem Intranet, der besonders dem Transport 
+von Dateien auf andere Systeme dient, ist das File-Transfer-Protokoll.
+Die Besonderheit des Protokolls liegt in den getrennten Kanälen für 
+die Daten und die Steuerung.
+Im RFC 959 ist für FTP TCP-Port 20 als Steuerungskanal und TCP-Port 21
+als Datenkanal festgelegt. FTP verwendet als Transportprotokoll immer TCP, 
+da dieses bereits einen sicheren Datentransfer garantiert und die FTP-Software 
+sich nicht darum zu kümmern braucht. FTP besitzt eine eigene 
+Kommandooberfläche, die interaktiv bedient wird. Der Aufruf dieses 
+Filetransferprogrammes erfolgt durch das Kommando <tt>ftp</tt>.<br>
+Die Vorteile von FTP liegen in den effizienten Verfahren zur Übertragung
+von Dateien beliebigen Formats und der Tatsache, daß der Zugriff seitens
+beliebiger Internet-Teilnehmern möglich ist. Andererseits
+kann bei größeren Archiven schnell die übersicht verlorengehen, wenn
+die Datenbestände nicht vernünftig sortiert sind. Bei umfangreichen
+Dateibäumen ist hingegen die Navigation durch die Verzeichnisse eine
+zeitraubende Angelegenheit. Es werden weiterhin zwei Betriebsmodi unterschieden:
+<ul>
+<li> Benutzerspezifisches FTP
+</li><li> Anonymous-FTP
+</li></ul>
+In beiden Fällen ist es möglich, Verzeichnisse einzusehen und
+zu wechseln, sowie Dateien zu empfangen und zu senden. Der Unterschied
+liegt in den Privilegien, die ein Benutzer besitzt. Während im ersten
+Fall der User eine Zugangsberechtigung zum System benötigt, so verfügt
+ein Gastzugang nur über eine eingeschränkte Sicht auf den Datenbereich
+des Servers, was als einfacher Sicherheitsmechanismus anzusehen ist.
+<p>
+</p><center><img src="Grundlagen%20Computernetze_hiher_Proto-Dateien/ftp.gif"></center>
+<p>
+Der Kommandoaufruf des FTP-Kommandos lautet
+</p><p>
+<tt><b>ftp</b> [ -v ] [ -d ] [ -i ] [ -n ] [ -g ] [ host ]</tt>
+</p><p>
+Wird beim Programmaufruf der gewünschte Kommunikationspartner (host) mit
+angegeben, so wird sofort versucht, eine Verbindung zu diesem Rechensystem aufzubauen.
+Ist der Versuch erfolglos, so wird in den Kommandomodus umgeschaltet. Der Prompt
+"<tt>ftp&gt;</tt>" erscheint immer auf dem Bildschirm, wenn ftp-Kommandos eingegeben
+werden können. <tt>ftp</tt> verfügt über einen help-Mechanismus,
+über den sämtliche auf dem jeweiligen System verfügbare Kommandos mit
+Kurzerklärungen abfragbar sind. <br>
+Nachfolgend werden wesentliche Kommandos nach Funktionalität gruppiert vorgestellt.
+Kommandos können soweit verkürzt eingegeben werden, als sie noch eindeutig
+erkennbar sind. Enthalten Kommandoargumente "Blanks", so sind die Argumente beidseitig mit
+Hochkommas eingeschlossen einzugeben. Nicht alle <b>ftp</b>-Implementierungen 
+unterstützen alle <b>ftp</b>-Kommandos.
+</p><ul>
+<li><tt>help [ kommando ]</tt><br>
+      zeigt kurze Informationen zu dem angegebenen Kommando. Wird das Kommando
+      weggelassen, zeigt dieser Aufruf eine Liste der zulässigen Kommandos.
+
+</li><li><tt>open</tt> host<br>
+      Öffne einer Verbindung zu einem fernen Host. Je nach angewähltem 
+      System werden Benutzerkennung und Passwort abgefragt.
+
+</li><li><tt>user</tt> user-name [ password ]<br>
+      Eingabe von Benutzerkennung und Passwort.
+
+</li><li><tt>!</tt><br>
+      Aufruf einer (eingeschränkten) Shell auf dem lokalen System. Für 
+      Dateiübertragung relevante Kommandos wie <tt>mkdir</tt>, <tt>mv</tt>, 
+      <tt>cp</tt>, etc sind absetzbar. Verlassen wird diese Shell mit "exit".
+
+</li><li><tt>lcd</tt> [directory ]<br>
+      Wahl des lokalen Directories für die Dateiübertragung. 
+
+</li><li><tt>pwd</tt><br>
+      Anzeige des aktuellen Directories auf dem entfernten System.
+
+</li><li><tt>cd</tt> remote-directory<br>
+      Wahl des aktuellen Directories auf dem entfernten System.
+
+</li><li><tt>cdup</tt><br>
+      Wechsel in das nächsthöhere Directory auf dem entfernten System.
+
+</li><li><tt>dir</tt> [ remote-directory [ local-file ] ]<br>
+<tt>ls</tt> [ remote-directory [ local-file ] ]<br>
+      Ohne Optionen erfolgt eine Anzeige der Einträge des entfernten aktuellen 
+      Directories. Dabei liefert <tt>dir</tt> ausführliche und <tt>ls</tt> 
+      eine knappe Information bezüglich des Directory-Inhalts.<br>
+      Bei Angabe des<tt> remote-directory </tt> erfolgt die Anzeige der Einträge 
+      des entfernten Directories. Wird <tt>local-file</tt> angegeben, erfolgt eine
+      Umlenkung der Directory-Anzeige in die Datei <tt>local-file</tt> auf dem lokalen
+      System.
+
+</li><li><tt>mdir</tt> remote-files [ local-file ]<br>
+<tt>mls</tt> remote-files [ local-file ]<br>
+      Anzeige von Dateien aus dem entfernten aktuellen Directory und Abspeicherung in eine
+      lokale Datei.
+
+</li><li><tt>mkdir</tt> directory-name<br>
+      Einrichten eines neuen Directories <tt>directory-name</tt> auf dem entfernten
+      System.
+
+</li><li><tt>rmdir</tt> directory-name<br>
+      löscht das Directory <tt>directory-name</tt> auf dem entfernten System.
+
+</li><li><tt>rename</tt> [ from ] [ to ]<br>
+      Umbenennen einer Datei auf dem entfernten System von <tt>from</tt> nach
+      <tt>to</tt>.
+
+</li><li><tt>delete</tt> remote-file<br>
+      Löschen der Datei <tt>remote-file</tt> auf dem entfernten System.
+
+</li><li><tt>mdelete</tt> remote-files<br>
+      Löschen mehrerer Dateien <tt>remote-files</tt> auf dem entfernten System.
+
+</li><li><tt>put</tt> local-file [ remote-file ]<br>
+<tt>send</tt> local-file [ remote-file ]<br>
+      Dateiübertragung der Datei <tt>local-file</tt> vom lokalen zum entfernten 
+      System. Wird <tt>remote-file</tt> nicht angegeben, so wird auch auf dem 
+      Zielsystem der Dateiname <tt>local-file</tt> verwendet. 
+
+</li><li><tt>append </tt>local-file [ remote-file ]<br>
+      überträgt die Datei <tt>local-file</tt> vom lokalen System an das entfernte
+      System und hängt diese am Ende der Datei <tt>remote-file</tt> an. Wurde 
+      <tt>remote-file</tt> nicht angegeben, wird die Datei ans Ende der Datei 
+      <tt>local-file</tt> auf dem entfernten System angehängt.
+
+</li><li><tt>mput</tt> local-files<br>
+      Dateiübertragung einer Dateigruppe namensgleich vom lokalen zum entfernten
+      System. 
+
+</li><li><tt>get</tt> remote-file [ local-file ]<br>
+     <tt>recv</tt> remote-file [ local-file ]<br>
+      Dateiübertragung einer Datei <tt>remote-file</tt> vom entfernten System zum
+      lokalen System. Wird <tt>local-file</tt> nicht mitangegeben, so erhält die Datei
+      auch auf dem lokalen System den Dateiname <tt>remote-file</tt>.
+
+</li><li><tt>mget</tt> remote-files<br>
+      Dateiübertragung einer Dateigruppe namensgleich vom entfernten zum lokalen
+      System. 
+
+</li><li><tt>ascii</tt><br>
+     <tt>type ascii</tt><br>
+      Die Dateiübertragung findet im ASCII-Code statt. Gegebenfalls werden
+      bei Binärdateien Zeichen verändert (z. B. die Zeilenendedarstellung
+      ans Zielsystem angepaßt) oder Zeichen verfälscht.
+
+</li><li><tt>binary</tt><br>
+     <tt>type image</tt><br>
+     <tt>type binary</tt><br>
+      Die Dateiübertragung findet transparent statt.
+
+</li><li><tt>case</tt><br>
+      Mit diesem Schalter läßt sich einstellen, ob Dateinamen beim Empfangen
+      (<tt>get</tt>, <tt>recv</tt>, <tt>mget</tt>) von Großbuchstaben 
+      nach Kleinbuchstaben übersetzt werden sollen.
+
+</li><li><tt>glob</tt><br>
+      Mit diesem Schalter läßt sich einstellen, ob bei den Kommandos 
+      <tt>mdelete</tt>, <tt>mget</tt> und <tt>mput</tt> bei Dateinamen, die 
+      Metazeichen (<tt>*?[]~{}</tt>) enthalten, diese Metazeichen übertragen 
+      werden oder nicht. ("off" = keine Metazeichenbehandlung). 
+
+</li><li><tt>ntrans</tt> [ inchars [ outchars ] ]<br>
+      Definition und Aktivierung einer Übersetzungstabelle für Dateinamen, wenn
+      beim Dateiübertragungsauftrag (Senden und Empfangen) keine Zieldateinamen 
+      angegeben werden. Zeichen eines Dateinamens, die in <tt>inchars</tt> zu finden 
+      sind, werden durch das positionsgleiche Zeichen in <tt>outchars</tt> 
+      übersetzt. Ist <tt>inchars</tt> länger als <tt>outchars</tt>, so 
+      werden die korrespondenzlosen Zeichen von <tt>inchars</tt> aus
+      dem Zieldateinamen entfernt.
+
+</li><li><tt>prompt</tt><br>
+      Mit diesem Zeichen wird bei Mehrdateienübertragung gesteuert, ob jede zu
+      übertragende Datei extra quittiert werden muß oder nicht.
+
+</li><li><tt>verbose</tt><br>
+      Wenn der "verbose"-Modus eingeschaltet ist, erhält man für jede 
+      übertragene Datei den Dateinamen auf dem lokalen und entfernten Rechner, 
+      sowie die Datenmenge und die dafür benötigte Übertragungszeit 
+      angezeigt.
+
+</li><li><tt>bell</tt><br>
+      Dieser Schalter bewirkt, daß je nach Stellung am Ende jedes 
+      Dateiübertragungsauftrages ein akustisches Signal ertönt oder nicht.
+
+</li><li><tt>status</tt><br>
+      Anzeige der aktuellen logischen Schalterstellungen sowie des Verbindungszustandes.
+
+</li><li><tt>close</tt><br>
+     <tt>disconnect</tt><br>
+      Beendigung einer aktiven Verbindung.
+
+</li><li><tt>quit</tt><br>
+      Beendigung des Programmes <tt>ftp</tt>.
+
+</li><li><tt>bye</tt><br>
+      Beendigung einer aktiven Sitzung und des Programmes <tt>ftp</tt>.
+</li></ul>
+<p>
+
+Die optionalen Parameter beim <tt>ftp</tt>-Kommando setzen logische
+Schalter für den ftp-Programmlauf. Im Kommandomodus sind die 
+Einstellungen jederzeit wieder änderbar.</p><p>
+</p><ul>
+<li><tt>-v</tt> verbose-Schalter einschalten.
+</li><li><tt>-d</tt> debug-Schalter einschalten.
+</li><li><tt>-i</tt> interactive-Modus für Mehrdateiübertragung einschalten.
+</li><li><tt>-n</tt> verhindert, daß <tt>FTP</tt> zum Beginn der Sitzung 
+                   einen Login-Versuch unternimmt.
+</li><li><tt>-g</tt> glob-Schalter einschalten.
+</li></ul>
+<p>
+Die Datei-Übertragung wird durch die Terminal "<tt>interrupt</tt>"-Taste
+(üblicherweise Ctrl-C) abgebrochen, was einen sofortigen Abbruch zur Folge haben soll.
+Nicht alle Kommunikationspartner verstehen die Abbruchaufforderung, wodurch dennoch
+die gesamte Datei übertragen wird.
+</p><p>
+Dateinamen, die als Argumente von FTP-Kommandos Verwendung finden, werden wie folgt
+bearbeitet:
+Ist "file globbing" eingeschaltet, werden bei den Kommandos <tt>mget</tt>,
+<tt>mput</tt> und <tt>mdelete</tt> die Namen lokaler Dateien folgendermaß
+behandelt:
+</p><ul>
+<li>Der <tt>*</tt> steht für eine beliebige Anzahl (auch Null) von Zeichen.
+</li><li>Das <tt>?</tt>steht für ein einziges beliebiges Zeichen.
+</li><li>Wird im Dateinamen eine Zeichenfolge angetroffen, die zwischen eckigen Klammern
+oder zwischen geschweiften Klammern steht, so sind alle Dateinamen zutreffend, die an
+dieser Stelle ein einziges beliebiges Zeichen aus der Zeichenfolge innerhalb der
+Klammern enthalten.
+</li><li>Steht die Zeichenfolge <tt>~/</tt> (Tilde, Schrägstrich) am Beginn des 
+Dateinamens, so wird sie durch den Home-Directory-Pfad ersetzt. 
+Das Zeichen <tt>~</tt>, dem eine Benutzerkennung folgt, wird durch den 
+Home-Directory-Pfad dieser Benutzerkennung ersetzt.
+</li></ul>
+<p>
+Kommandos und Protokoll-Anweisungen:
+</p><p>
+<table width="80%" align="CENTER" border="1" cellpadding="3">
+<tbody><tr><td>ftp-Client</td><td>FTP-Protokoll</td><td>Aufgabe</td></tr>
+<tr><td>login</td><td>USER username<br>PASS password</td><td>anmelden</td></tr>
+<tr><td>help<br>help command</td><td>HELP<br>HELP command</td><td>Hilfe</td></tr>
+<tr><td>&nbsp;</td><td>SYST</td><td>Server-Identifikation</td></tr>
+<tr><td>status</td><td>STAT</td><td>Transfer-Status
+</td></tr><tr><td>&nbsp;</td><td>STAT path</td><td>wie LIST, über control-Verbindung</td></tr>
+<tr><td>dir path</td><td>LIST path</td><td>Kataloginhalt zeigen, ausführlich</td></tr>
+<tr><td>ls path</td><td>NLST path</td><td>Dateinamen zeigen</td></tr>
+<tr><td>delete path</td><td>DELE path</td><td>Datei löschen</td></tr>
+<tr><td>rename from to</td><td>RNFR from-path<br>RNTO to-path</td><td>Datei umbenennen</td></tr>
+<tr><td>pwd</td><td>PWD</td><td>Arbeitskatalog zeigen</td></tr>
+<tr><td>cd path</td><td>CWD path</td><td>Katalog wechseln</td></tr>
+<tr><td>mkdir path</td><td>MKD path</td><td>Katalog erzeugen</td></tr>
+<tr><td>rmdir path</td><td>RMD path</td><td>Katalog löschen</td></tr>
+<tr><td>ascii</td><td>TYPE A N</td><td>Textübertragung (Voreinstellung)</td></tr>
+<tr><td>binary</td><td>TYPE I</td><td>Datenübertragung</td></tr>
+<tr><td>&nbsp;</td><td>PORT h,h,h,h,p,p</td><td>Port des Klienten für data-Verbindung</td></tr>
+<tr><td>get remote-path</td><td>RETR path</td><td>Datei zum Klienten übertragen</td></tr>
+<tr><td>put local-path</td><td>STOR path</td><td>Datei zum Server übertragen</td></tr>
+<tr><td>append local-path</td><td>APPE path</td><td>an Datei auf Server anfügen</td></tr>
+<tr><td><i>interrupt</i></td><td>ABOR</td><td>_bertragung abbrechen</td></tr>
+<tr><td>quit</td><td>QUIT</td><td>Verbindung beenden</td></tr>
+</tbody></table>
+</p><p>
+</p><h3>Beispiel</h3>
+Benutzereingaben sind <b>fett</b> gedruckt.
+<pre><b>ftp multimedia.ee.fhm.edu</b>
+Verbindung mit multimedia.ee.fhm.edu.
+220 ProFTPD 1.2.2rc2 Server [multimedia.e-technik.fh-muenchen.de]
+Benutzer (multimedia.ee.fhm.edu:(none)): <b>plate</b>
+331 Password required for plate.
+Kennwort:
+230 User plate logged in.
+Ftp&gt; <b>ls</b>
+200 PORT command successful.
+150 Opening ASCII mode data connection for file list.
+tmp
+Mail
+bin
+226 Transfer complete.
+Ftp: 36 Bytes empfangen in 0.00Sekunden 36000.00KB/Sek.
+Ftp&gt; <b>cd tmp</b>
+250 CWD command successful.
+Ftp&gt; <b>lcd E:\www-netzmafia\skripten\perl</b>
+Lokales Verzeichnis jetzt E:\www-netzmafia\skripten\perl.
+Ftp&gt; <b>cd /opt/www/skripten/perl</b>
+250 CWD command successful.
+Ftp&gt; <b>put perl3.html</b>
+200 PORT command successful.
+150 Opening ASCII mode data connection for perl3.html.
+226 Transfer complete.
+Ftp: 77604 Bytes gesendet in 9.17Sekunden 8.46KB/Sek.
+Ftp&gt; <b>put perl4.html</b>
+200 PORT command successful.
+150 Opening ASCII mode data connection for perl4.html.
+226 Transfer complete.
+Ftp: 30930 Bytes gesendet in 3.24Sekunden 9.55KB/Sek.
+Ftp&gt; <b>quit</b>
+</pre>
+<p>
+</p><h3>Active und Passive FTP</h3>
+Beim FTP-Zugriff werden zwei Modi unterschieden, active und passive FTP.
+Beim <b>active mode FTP</b> öffnet der Client eine Verbindung von einem
+unprivilegierten Port (Portnummer N &gt; 1023) zum Kommandoport 21 des
+FTP-Servers. Dann spezifiziert der Client den Port N+1 als Datenport
+(PORT-Kommando). Der Server schickt seine Daten an den spezifizierten 
+Port des Client von seinem Port 20 aus.
+Aus Sicht eines vorgeschalteten Firewall-Systems müssen demnach folgende
+Ports offen sein:
+<ul>
+<li>FTP Serverport 21 von allen Ports ausserhalb (Client initiert die Verbindung)
+</li><li>FTP Serverport 21 an Ports &gt; 1023 (Server-Antwort auf Kommandos)
+</li><li>FTP Serverport 20 an Ports &gt; 1023 (Datenverbindung, Aufbau von Serverseite)
+</li><li>FTP Serverport 20 von Ports &gt; 1023 (Datenverbindung, Bestätigung vom Client)
+</li></ul>
+Sperrt ein Firewall im Netz des Client den Verbindungsaufbau von außen, ist keine 
+Datenübertragung möglich (wohl aber die Kommandoverbindung).
+<p>
+<img src="Grundlagen%20Computernetze_hiher_Proto-Dateien/akt_pas_ftp.gif" aling="center">
+</p><p>
+
+Zur Lösung dieses Problems kann der FTP-Client mit dem Befehl PASV
+in das <b>passive mode FTP</b> umgeschaltet werden. Der Client initiert
+nun Kommando- und Datenverbindung. Nach dem Umschalten in den passiven
+Modus, bietet der Server einen unprivilegierten Port &gt; 1023 an, den
+der Client dann für den Datentransfer ansprechen kann.
+Aus Sicht eines vorgeschalteten Firewall-Systems müssen demnach folgende
+Ports offen sein:
+</p><ul>
+<li>FTP Serverport 21 von allen Ports ausserhalb (Client initiert die Verbindung)
+</li><li>FTP Serverport 21 an Ports &gt; 1023 (Server-Antwort auf Kommandos)
+</li><li>FTP Serverport &gt; 1023 von überall (Datenverbindung, Aufbau von Clientseite)
+</li><li>FTP Serverport &gt; 1023 an Ports &gt; 1023 (Datenverbindung, Bestätigung vom Server)
+</li></ul>
+Wenn auch nun die Probleme auf der Cleintseite gelöst sind, sind sie nun auf
+der Serverseite vorhanden. Der FTP-Server muß im Passivmodus alle Verbindungen
+von anderen Systemen auf Ports &gt; 1023 zulassen. Um hier die Sicherheit zu
+verbessern, kann man bei etlichen Serverprogrammen den Portbereich per
+Konfiguration einschränken.
+<p>
+Manche FTP-Clients können nicht in den Passivmodus schalten, es bleibt dann nur 
+die Wahl eines anderen Programms. Dagegen können die Webbrowser im Passivmodus
+arbeiten (und tun dies meist per Default).
+
+
+<a name="9.6"></a>
+</p><h2>HTTP - Hypertext Transfer Protocol</h2>
+
+HTTP ist ein Protokoll der Applikationsschicht, das alle Möglichkeiten
+der Übertragung von Hypermedia-Informationen bietet. HTTP ist nicht 
+Hardware- oder Betriebssystemabhängig. Seit 1990 ist dieses Protokoll 
+im Einsatz und wird derzeit meist in der Version 'HTTP/1.1' (seltener 1.0)
+verwendet.
+<p>
+Heutige Informationssysteme benötigen weit mehr Funktionen als 
+das einfache Senden und Empfangen von Nachrichten. Die Entwicklung von 
+HTTP ist nicht abgeschlossen. Es bietet die Möglichkeit, 
+weitere Funktionalität zu entwickeln.  Die Adressierung von Ressourcen 
+erfolgt dabei mittels URls, die zum einen Orte (URL) oder Bezeichner (URN) 
+sein können. Diese zeigen gleichzeitig den gewünschten 
+Übertragungsmechanismus an. Nachrichten werden in der gleichen Form 
+übertragen, wie sie auch bei normalem Mail-Transport verwandt 
+werden. Dabei kommt oft MIME zum Einsatz. HTTP/1.1 ist auch für 
+den Zugriff auf Server mit anderen Protokollen geeignet. 
+</p><p>
+
+</p><h3>Hauptfunktionen des HTTP</h3>
+Die grundlegende Funktionsweise des HTTP folgt dem alten Frage-Antwort-Spiel. 
+Ein fragendes Programm (WWW-Browser) öffnet eine Verbindung zu einem 
+Programm, welches auf Fragen wartet (WWW-Server) und sendet ihm die Anfrage 
+zu. Die Anfrage enthält, die Fragemethode, die URL, die Protokollversion, 
+Informationen über den Dienst und möglicherweise etwas Inhalt in Form 
+einer Nachricht. Der Server antwortet auf diese Frage mit einer Statusmeldung, 
+auf die eine MIME-artige Nachricht folgt, die Informationen über den Server 
+und eventuell schon das gefragte Dokument enthält. 
+<p>
+</p><center><img src="Grundlagen%20Computernetze_hiher_Proto-Dateien/http.gif" alt=""></center>
+<p>
+Direkt nach Beantwortung der Frage wird die Verbindung wieder abgebaut. So 
+soll erreicht werden, daß die Leitungskapazitäten geschont werden. 
+Derzeit finden HTTP-Verbindungen meist per TCP/IP statt. Das soll aber nicht
+ heißen, daß HTTP nicht auch auf anderen Netzwerkprotokollen aufsetzen kann.
+Beide Seiten müssen auch dazu in der Lage sein, auf den vorzeitigen Abbruch 
+der Kommunikation durch die andere Seite zu reagieren. Vorzeitiger Abbruch 
+kann durch Aktionen von Benutzern, Programmfehler oder Überschreiten der 
+Antwortzeiten ausgelöst werden. Durch den Abbruch der Verbindung durch eine 
+der beiden Seiten wird der gesamte Vorgang abgebrochen.
+</p><p>
+
+</p><h3>Struktur der HTTP-Botschaften</h3>
+Jede Kommunikation zwischen zwei WWW-Programmen besteht aus HTTP-Botschaften, 
+die in Form von Anfragen und Antworten zwischen Client und Server ausgetauscht
+werden. Eine HTTP-Botschaft (HTTP-Message) kann entweder ein 
+<i>Simple-Request</i>, eine <i>Simple-Response</i>, ein <i>Full-Request</i> 
+oder eine <i>Full-Response</i> sein. Die beiden zuerst genannten Botschaftstypen 
+gehören zum HTTP/0.9-Standard. Die beiden letzten Typen gehören schon 
+zum HTTP/1.0.
+<p>
+
+</p><h3>Allgemeinfelder des Botschaftskopfes</h3>
+Jedes der Felder eines HTTP-Botschaftenkopfes weist die gleiche Struktur 
+auf. Im RFC 822 wurde definiert, daß jedes Feld mit einem Feldnamen und 
+dem Feldinhalt erscheint.
+Auf den Feldnamen muß unbedingt ein Doppelpunkt folgen. Der Feldname kann 
+alle Zeichen außer dem Doppelpunkt und der Escape-Sequenzen enthalten.
+Allgemeinfelder enthalten Informationen wie das Datum, die Message-ID, 
+die verwendete MIME-Version und ein 'forwarded'-Feld, das angibt, ob das 
+Dokument eigentlich von einer anderen Adresse stammt.
+<p>
+
+</p><h3>Anfragen</h3>
+Bei Anfragen wird zwischen einfachen und komplexen Anfragen unterschieden. 
+Eine einfache Anfrage besteht nur aus einer Zeile, die angibt, welche 
+Information gewünscht wird. Ein Beispiel:
+<p></p><pre>     GET http://www.netzmafia.de/index.html
+</pre><p>
+Dabei wird nur die Methode (GET) und die URL des Dokumentes angegeben. Es 
+werden keine weiteren Felder erwartet und vom adressierten Server wird 
+auch nur ein ganz einfacher Antwortkopf zurückgesendet.
+Es kann aber auch eine komplexere Anfrage erzeugt werden. Dabei muß die 
+Zeile aus dem obigen Beispiel noch die Version des HTT-Protokolls 
+angehängt werden. In einem Beispiel würde das folgendermaßen aussehen:
+</p><p></p><pre>     GET http://www.netzmafia.de/index.html HTTP/1.0
+</pre><p>
+Die Anfügung der HTTP-Version ist also der ganze Unterschied zwischen 
+einer einfachen und einer komplexen HTTP-Anfrage. Der Unterschied zwischen 
+einfacher und komplexer Anfrage wird aus Gründen der Kompatibilität 
+gemacht. Ein Browser, der noch das alte HTTP/0.9 implementiert hat, wird 
+nur eine einfache Anfrage losschicken können. Ein neuer Server muß 
+dann eine Antwort, auch im Format des HTTP/0.9 zurücksenden.
+</p><p>
+
+</p><h3>Felder einer komplexen Anfrage</h3>
+Um die Anfrage näher zu spezifizieren, wurden weitere Felder eingeführt. 
+In den Anfragefeldern stellen z. B. Informationen über den Server und 
+den benutzten Browser. Weiterhin kann man dort Informationen über den 
+Gegenstand der Übertragung bekommen. In der folgenden kurzen Übersicht 
+sind alle möglichen Felder einer Anfrage aufgeführt.
+<ul>
+<li>Anfragezeile (Request-Line)<br> 
+Informationsanfrage wie oben geschildert. Die zugehörigen Methoden 
+folgen im nächsten Abschnitt.
+</li><li>Allgemeiner Kopf (General-Header)<br>
+Im allgemeinen Kopf werden allgemeine Informationen über die Nachricht 
+übermittelt.
+</li><li>Anfragekopf (Request-Header)<br>
+In diesen Feldern kann der Browser weitere Informationen über die 
+Anfrage und über den Browser selbst absetzen. Diese Felder sind optional 
+und müssen nicht erscheinen. 
+</li><li>Gegenstandskopf (Entity-Header)<br>
+In diesem Feld werden Einträge übermittelt, welche den Inhalt der 
+Nachricht näher beschreiben.
+</li><li>Gegenstand der Nachricht (Entity-Body)<br> 
+Vor dem eigentlichen Inhalt muß definitionsgemäß eine Leerzeile stehen. 
+Der Inhalt ist dann in dem Format codiert, das in den Gegenstandsfeldern 
+definiert wurde (meist HTML).
+</li></ul>
+<p>
+
+</p><h3>Fragemethoden</h3>
+Das an erster Stelle in einer Anfragezeile (Request-Line) stehende Wort 
+beschreibt die Methode, die mit der nachfolgenden URL angewendet werden 
+soll. Die Methodennamen müssen dabei immer groß geschrieben werden. 
+Der Entwurf des HTTP-Standards erlaubt leicht eine Erweiterung. 
+Kommen wir nun zur Bedeutung der einzelnen Methoden.
+<ul>
+<li>GET<br> 
+Diese Methode gibt an, daß alle Informationen, die mit der nachfolgenden 
+URL beschrieben werden, zum rufenden Client geholt werden sollen. Zeigt 
+die URL auf ein Programm (CGI-Script), dann soll dieses Programm gestartet 
+werden und die produzierten Daten liefern. Handelt es sich bei dem 
+referenzierten Datum um eine Datei, dann soll diese übertragen werden.
+Beispiel:
+<p></p><pre>     GET http://www.netzmafia.de/index.html
+</pre><p>
+</p></li><li>HEAD<br> 
+Diese Methode ist identisch zur Methode GET. Die Antworten unterscheiden 
+sich nur darin, daß bei der Methode GET ein komplettes Dokument übertragen 
+wird und bei HEAD nur die Meta-Informationen gesendet werden. Dies ist 
+nützlich, um Links auszuprobieren oder um die Erreichbarkeit von 
+Dokumenten zu testen. Bei Anwendung der Methode HEAD wird der Kopf des 
+referenzierten HTML-Dokuments nach 'link' und 'meta' Elementen durchsucht.
+<p>
+</p></li><li>POST<br> 
+Diese Methode wird hauptsächlich für größere Datenmengen verwandt. Man 
+stelle sich vor, ein HTML-Dokument enthält ein komplexes Formular. Per 
+POST wird dem Server angezeigt, daß er auch die Daten im Körper der 
+Botschaft bearbeiten soll.<br>
+Verwendet, wird es hauptsächlich bei Datenblöcken, die zu einem 
+verarbeitenden Programm übertragen werden. Die wirkliche Funktion, die 
+durch POST auf dem adressierten Rechner angestoßen wird, wird durch die 
+URL bestimmt. Meist, sind es CGI-Scripte, die den Inhalt der Nachricht 
+verarbeiten. 
+<p>
+</p></li><li>PUT<br> 
+Die mit der Methode PUT übertragenen Daten sollen unter der angegeben 
+URL gespeichert werden. Das soll ermöglichen, daß WWW-Seiten auch ohne 
+direkten Zugriff auf den anbietenden Rechner erstellt und angeboten 
+werden können. Wird ein Dokument mit der Methode PUT übertragen, dann 
+wird unter dieser Adresse ein Dokument mit dem übertragenen Inhalt 
+angelegt. War die Aktion erfolgreich, wird die Meldung '200 created' 
+zurückgegeben. Existiert unter dieser Adresse schon ein Dokument, dann 
+wird dieses überschrieben. War auch diese Aktion erfolgreich, dann wird 
+nur '200 OK' zurückgemeldet.<br>
+Der Hauptunterschied zwischen POST und PUT besteht darin, daß bei POST 
+die URL eine Adresse eines Programmes referenziert, das mit den Daten 
+umgehen kann. Bei PUT hingegen wird die URL als neue Adresse des 
+Dokumentes gesehen, das gerade übertragen wurde. Meist jedoch ist die 
+Methode PUT ausgeschaltet, weil Server-Betreiber befürchten, daß die 
+Sicherheit, des Systems dadurch nicht mehr gewährleistet ist.
+<p>
+</p></li><li>DELETE<br> 
+Mit dieser Methode kann der Inhalt einer URI (Unified Resource Identifier) gelöscht 
+werden. Diese  Methode ist neben der Methode PUT eine der gefährlichsten. Wenn Server 
+nicht richtig konfiguriert wurden, dann kann es mitunter vorkommen, daß 
+alle Welt die Berechtigung zum Löschen von Ressourcen hat.
+<p>
+</p></li><li>LINK<br> 
+Mit dieser Methode können eine oder mehrere Verbindungen zwischen 
+verschiedenen Dokumenten erzeugt werden. Es werden dabei keine 
+Dokumente erstellt, sondern nur schon bestehende miteinander verbunden.
+<p>
+</p></li><li>UNLINK<br> 
+entfernt Verbindungen zwischen verschieden Ressourcen. Dabei wird nur 
+die Verbindung gelöscht. Die Dokumente existieren trotzdem weiter.
+Mit diesen Methoden kann man alle möglichen Ressourcen erreichen, 
+welche die verschiedenen Server zur Verfügung stellen. Die folgenden 
+Felder beschreiben nun die Fragen etwas genauer. Es kann zum Beispiel 
+verhindert werden, daß ungewollt umfangreiche Bilder übermittelt werden, 
+wenn dies nicht gewünscht wird.
+</li></ul>
+<p>
+
+</p><h3>Beispiel einer Konversation</h3>
+Benutzereingaben werden kursiv geschrieben. Das lokale System ist eine Windows-Kiste.
+<p>
+</p><pre> 
+<i>plate@lx3-lbs:~ &gt; telnet www.netzmafia.de 80</i>
+Trying 141.39.253.210...
+Connected to www.netzmafia.de.
+Escape character is '^]'.
+<i>GET /index.html HTTP/1.0</i>
+
+HTTP/1.1 200 OK
+Date: Mon, 18 Sep 2000 13:59:58 GMT
+Server: Apache/1.3.6 (Unix)  (SuSE/Linux)
+Last-Modified: Tue, 29 Aug 2000 08:08:58 GMT
+ETag: "134015-8e8-39ab6f9a"
+Accept-Ranges: bytes
+Content-Length: 2280
+Connection: close
+Content-Type: text/html
+
+&lt;HTML&gt;
+&lt;HEAD&gt;
+&lt;TITLE&gt;Netzmafia&lt;/TITLE&gt;
+&lt;/HEAD&gt;
+
+&lt;body bgcolor="#000000" text="#FFFFCC" link="#FFCC00" 
+       alink="#FF0000" vlink="#FF9900"&gt;
+
+       ...
+
+
+&lt;/BODY&gt;
+&lt;/HTML&gt;
+Connection closed by foreign host.
+</pre>
+<p>
+
+</p><center><table border="0" width="100%">
+<tbody><tr>
+<td valign="TOP" align="LEFT"><img src="Grundlagen%20Computernetze_hiher_Proto-Dateien/left.gif" border="0"> <a href="https://web.archive.org/web/20070630160227/http://netzmafia.de/skripten/netze/netz8.html">Zum vorhergehenden Abschnitt</a></td>
+<td valign="TOP" align="CENTER"><img src="Grundlagen%20Computernetze_hiher_Proto-Dateien/up.gif" border="0"> <a href="https://web.archive.org/web/20070630160227/http://netzmafia.de/skripten/netze/index.html">Zum Inhaltsverzeichnis</a></td>
+<td valign="TOP" align="RIGHT"><img src="Grundlagen%20Computernetze_hiher_Proto-Dateien/right.gif" border="0"> <a href="https://web.archive.org/web/20070630160227/http://netzmafia.de/skripten/netze/netz10.html">Zum nächsten Abschnitt</a></td>
+</tr></tbody></table></center>
+<p></p><hr>
+<h6><i>Copyright © FH München, FB 04, Prof. Jürgen Plate</i></h6>
+<h6><i>Letzte Aktualisierung: 12. Sep 2006</i></h6>
+
+
+
+</body></html>
+<!--
+     FILE ARCHIVED ON 16:02:27 Jun 30, 2007 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 05:24:07 May 28, 2025.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  captures_list: 0.473
+  exclusion.robots: 0.025
+  exclusion.robots.policy: 0.016
+  esindex: 0.008
+  cdx.remote: 10.507
+  LoadShardBlock: 55.549 (3)
+  PetaboxLoader3.datanode: 80.643 (4)
+  load_resource: 285.866
+  PetaboxLoader3.resolve: 81.39
+-->
