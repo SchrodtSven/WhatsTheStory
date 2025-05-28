@@ -23,6 +23,17 @@ Morning Glory? Finally there is some Dihydrogen monoxide[^1]
 - [ ] https://developer.mozilla.org/de/docs/Glossary/Idempotent
 
 
+##Ideas
+
+''' Blog.schrodt.nrw
+
+- edit md
+    -> content/2025/05/23_1-LoremIps/
+    -> content/2025/05/23_1-LoremIps/meta
+    -> -> content/2025/05/23_1-LoremIps/txt
+- -> HTML transf:
+    -> -> pub/2025/05/23_1-LoremIps.html
+    -> -> pub/bin/2025/grafick.png
 
 
 
