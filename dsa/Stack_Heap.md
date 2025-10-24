@@ -11,11 +11,8 @@ All data stored on the *stack* </var>* **must have a known, fixed size**. Data w
 ```mermaid
 ---
 config:
-  look: handdrawn
-  theme: base
-  themeVariables:
-    primaryColor: "#00ff00"
-    secondaryColor: "#003300"
+    look: handDrawn
+    theme: neutral
 ---
 sequenceDiagram
     Program->>Stack: push(23)
