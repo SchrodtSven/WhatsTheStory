@@ -1,7 +1,4 @@
-# Multi Tier Architektur 
-
-## Client-Server Model
-
+# Multi Tier Architecture
 
 ```mermaid
 ---
