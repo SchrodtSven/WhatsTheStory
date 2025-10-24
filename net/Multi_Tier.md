@@ -16,10 +16,10 @@ autonumber
     participant ApplicationServer@{ "type" : "queue" }
     participant RDBMS@{ "type" : "database" }
     UserAgent->>Webserver: http://Loki/Api/Entry/items/new 
-    Webserver->>ApplicationServer: Hole Daten zu Produkt ABC
+    Webserver->>ApplicationServer: get data for product ABC
     ApplicationServer->>RDBMS:SQL
-    RDBMS->>ApplicationServer:Liefeer Daten
-    ApplicationServer->>Webserver: Liefert Daten (z.B: Prudktdaten aus DB + weitere Berechnungen)
-    Webserver->>UserAgent: HTTP Response (JSON Payload oder HTML Payload etc.)
+    RDBMS->>ApplicationServer: Send result set
+    ApplicationServer->>Webserver: Resond with data
+    Webserver->>UserAgent: HTTP Response (JSON Payload or HTML Payload etc.)
     
 ```
