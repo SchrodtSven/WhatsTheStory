@@ -1,4 +1,6 @@
 # What’s the Story?
 
-- [ ] https://developer.mozilla.org/de/docs/Glossary/Idempotent
-- H<sup>2</sup>0 
+Some IT chapterz explained ... 
+
+> [!NOTE]
+> Will be continued ...
