@@ -4,7 +4,7 @@ Is a networking architecture where a client (a requesting device or program) **s
 
 ```mermaid
 ---
-title: Client Server
+title: “active" - ... --- ... - “passive"
 config:
   look: handDrawn
   layout: dagre
@@ -13,7 +13,7 @@ config:
 sequenceDiagram
 autonumber
     actor Client
-    participant Server
+    participant Server@{ "type" : "database" }
     Client->>Server: Request
     Server->>Client: Response
 
