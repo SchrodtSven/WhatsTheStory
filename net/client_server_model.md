@@ -1,4 +1,20 @@
 # Client-Server model
 
-Is a networking architecture where a client (a requesting device or program) sends requests to a server (a service provider) to access resources or perform actions.
+Is a networking architecture where a client (a requesting device or program) **sends requests** to a server (a service provider) to **access resources or perform actions**.
 
+```mermaid
+---
+title: Client Server
+config:
+  look: handDrawn
+  layout: dagre
+  theme: base
+---
+sequenceDiagram
+autonumber
+    actor Client
+    participant Server
+    Client->>Server: Request
+    Server->>Client: Response
+
+```
