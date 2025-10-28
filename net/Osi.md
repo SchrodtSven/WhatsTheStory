@@ -16,4 +16,9 @@ block
   2. Data_Link .2
   1. Physical .1
 
+  classDef app fill:#696,stroke:#333;
+  classDef transp fill:#969,stroke:#333;
+  class 7.,6.,5. app
+  class 1.,2.,3.,4. transp
+
 ```
