@@ -76,7 +76,7 @@ config:
 ---
 sequenceDiagram
 autonumber
-    participant Server_Not_Sel@{ "type" : "boundary"}
+    
     participant Client@{ "type" : "control" }
     participant Server_Sel@{ "type" : "boundary"}
 
