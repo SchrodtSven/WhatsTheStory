@@ -1,4 +1,4 @@
-# Design Pattern: singleton
+# Design Pattern: Singleton
 
 ## Class diagram
 
@@ -8,7 +8,7 @@
 
 ```mermaid
 ---
-title: Animal example
+title: Singleton
 ---
 classDiagram
     note "Example Singleton class diagram"
