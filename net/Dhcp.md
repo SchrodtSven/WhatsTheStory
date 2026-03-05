@@ -1,6 +1,6 @@
 # Dynamic Host Configuration Protocol - DHCP
 
-As descibed in RFC [RFC2131](https://datatracker.ietf.org/doc/html/rfc2131)
+As descibed in [RFC2131](https://datatracker.ietf.org/doc/html/rfc2131)
 
 ## DHCP Message format
 
