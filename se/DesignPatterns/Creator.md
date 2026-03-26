@@ -12,13 +12,37 @@
 ---
 title: Creator
 ---
-zenuml
-    title Demo
-    Alice->John: Hello John, how are you?
-    John->Alice: Great!
-    Alice->John: See you later!
+classDiagram
+     note "Example diagram for pattern 'Creator'"
+
+    class Creator
+    <<interface>> Creator
+    Creator : + reset()
+    Creator : + setAttr(string attrNm, mixed value)
+
+    class Architect {
+      + Architect(string type, Creator instance)
+      + getResults()
+    }
 
 
+    class Foo {
+        + reset()
+        + setAttr(string attrNm, mixed value)
+        - debug()
+    }
+
+    class Bar {
+        + reset()
+        + setAttr(string attrNm, mixed value)
+        - debug()
+    }
+    
+    Creator <|--  Bar: implements
+    Creator <|-- Foo : implements
+    Architect ..|> Creator: composes
+
+    note for Architect "new Architect ('Foo', new Creator())"
 ```
 
 
